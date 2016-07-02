@@ -1,0 +1,17 @@
+{
+  "name": "yaml_gantt",
+  "version": "0.1.0",
+  "description": "A client tool to create Ganttchart from yaml.",
+  "bin": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ganntchart"
+  ],
+  "author": "ihgs",
+  "license": "MIT",
+  "dependencies": {
+    "d3": "^4.0.0"
+  }
+}
