@@ -1,0 +1,41 @@
+.axis path, .axis line {
+    fill: none;
+    stroke: #CCC;
+}
+
+.monthAxis path, .monthAxis line {
+    fill: none;
+    stroke: #CCC;
+}
+
+.monthAxis text{
+    text-anchor: start !important;
+    font-size: 20px;
+}
+
+rect {
+    fill: #fff;
+}
+.ganttGraph{
+    width: 100%;
+    height: 100%;
+}
+text {
+    font-size: 11px;
+}
+rect.taskRange {
+    fill: url(#gradient);
+    stroke: #000;
+}
+
+rect.saturdayBackground{
+    fill: #E6ECFF;
+}
+
+rect.sundayBackground{
+    fill: #FFDEDE;
+}
+
+.taskName{
+    font-size: 13px;
+}

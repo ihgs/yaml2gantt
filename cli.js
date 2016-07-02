@@ -5,6 +5,7 @@
 var d3 = require("d3")
 var moment = require("moment");
 var jsdom = require('jsdom');
+var fs = require('fs');
 
 
 global.document = jsdom.jsdom(`
@@ -146,13 +147,17 @@ function update(){
        });
 };
 
+function load_css(){
+  return fs.readFileSync("./public/css/gantt.css")
+}
+
 function init(){
   var self = this;
   var margin = { top: 50, right: 20, bottom: 20, left: 20 };
   //_width = parseInt(d3.select(".ganttGraph").style("width"), 10) - margin.left - margin.right;
   //_height = document.querySelector(".ganttGraph").clientHeight - margin.top - margin.bottom;
-  _width = 300
-  _height = 100
+  _width = 800
+  _height = 300
 
   //初期表示範囲設定
   var now = new Date();
@@ -194,22 +199,17 @@ function init(){
       .tickSize(_height + 20)
       .tickFormat(d3.timeFormat("%B"));
 
-  //ズーム範囲設定
-  // var zoom = d3.zoomTransform()
-  //     .rescaleX(_xScale) //たぶん
-  //     .scale(0.5)
-  //     .scaleExtent([0.3, 10])
-  //     .on("zoom", function () {
-  //         self.update();
-  //     });
-
   //SVG生成
   _svg = d3.select(document.body).append("svg")
       .attr("width", _width + margin.left + margin.right)
       .attr("height", _height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      // .call(zoom);//zoom関数に引数付きでセレクションを渡す
+
+  //css
+  _svg.append("defs")
+      .append("style")
+      .text("<![CDATA[" + load_css() + "]]>");
 
   //ズーム当たり判定
   _svg.append("rect")
