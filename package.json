@@ -15,5 +15,10 @@
     "d3": "^4.0.0",
     "jsdom": "^9.3.0",
     "moment": "^2.13.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-run": "^1.7.1"
   }
 }
