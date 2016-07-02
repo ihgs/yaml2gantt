@@ -19,20 +19,23 @@ global.document = jsdom.jsdom(`
 `);
 
 var _data = [
-        [
-            "仕様書作成",
-            moment().add(-1, 'days').format("M/D"),
-            moment().add(3, 'days').format("M/D")
-        ], [
-            "コーディング",
-            moment().add(3, 'days').format("M月D日"),
-            moment().add(6, 'days').format("M月D日")
-        ], [
-            "テスト",
-            moment().add(4, 'days').format("YYYY/MM/DD"),
-            moment().add(10, 'days').format("YYYY/MM/DD")
-        ]
-    ]
+  {
+    "name": "仕様書作成",
+    "start": moment().add(-1, 'days').unix()*1000,
+    "end": moment().add(3, 'days').unix()*1000 + 1000 * 60 * 60 * 24
+  },
+  {
+    "name": "コーディング",
+    "start": moment().add(3, 'days'),
+    "end": moment().add(6, 'days')
+  },
+  {
+    "name": "テスト",
+    "start": moment().add(4, 'days'),
+    "end": moment().add(10, 'days')
+  }
+]
+
 
 var _weekendsGroup;
 var _tasksGroup;
@@ -106,7 +109,14 @@ function update(){
 
    tasks.enter()
        .append("rect")
-       .attr("class", "taskRange");
+       .attr("class", "taskRange")
+       .attr("x", function (item) {
+          return _xScale(item.start);
+        }).attr("y", function (item, i) {
+          return i * 30 + 20
+        }).attr("width", function (item) {
+          return Math.abs(_xScale(item.end) - _xScale(item.start));
+        }).attr("height", 10);
 
    tasks.exit().remove();
 
@@ -115,29 +125,10 @@ function update(){
 
    text.enter()
        .append("text")
-       .attr("class", "taskName");
-
-   text.exit().remove();
-
-   //ズーム
-   _svg.select(".x.axis").call(_xAxis)
-       .call(adjustTextLabels);
-
-   _svg.select(".x.monthAxis").call(_monthAxis);
-
-   //タスク表示
-   tasks.attr("x", function (item) {
-       return _xScale(item.start);
-   }).attr("y", function (item, i) {
-       return i * 30 + 20
-   }).attr("width", function (item) {
-       return Math.abs(_xScale(item.end) - _xScale(item.start));
-   }).attr("height", 10);
-
-   //タスクのラベル表示
-   text.text(function (item) {
-       return item.name
-   })
+       .attr("class", "taskName")
+       .text(function (item) {
+           return item.name
+       })
        .attr("text-anchor", "end")
        .attr("x", function (item) {
            return _xScale(item.start) - 10
@@ -145,6 +136,20 @@ function update(){
        .attr("y", function (item, i) {
            return i * 30 + 30
        });
+
+   text.exit().remove();
+
+  //  //ズーム
+  //  _svg.select(".x.axis").call(_xAxis)
+  //      .call(adjustTextLabels);
+   //
+  //  _svg.select(".x.monthAxis").call(_monthAxis);
+
+   //タスクのラベル表示
+   text.text(function (item) {
+       return item.name
+   })
+
 };
 
 function load_css(){
@@ -164,7 +169,7 @@ function init(){
   var dateStart = new Date(now.getTime());
   dateStart.setDate(dateStart.getDate() - 3);
   var dateEnd = new Date(now.getTime());
-  dateEnd.setDate(dateEnd.getDate() + 15);
+  dateEnd.setDate(dateEnd.getDate() + 35);
 
   _xScale = d3.scaleTime()
       .domain([dateStart, dateEnd])
@@ -190,12 +195,12 @@ function init(){
 
   //X軸表示設定
   _xAxis = d3.axisTop(_xScale)
-      .ticks(d3.timeDay.utc, 1)
+      .ticks(d3.timeDay.every(1))
       .tickSize(_height)
       .tickFormat(d3.timeFormat("%-d"));
 
   _monthAxis = d3.axisTop(_xScale)
-      .ticks(d3.timeMonth.utc, 1)
+      .ticks(d3.timeMonth.every(1))
       .tickSize(_height + 20)
       .tickFormat(d3.timeFormat("%B"));
 
@@ -210,11 +215,6 @@ function init(){
   _svg.append("defs")
       .append("style")
       .text("<![CDATA[" + load_css() + "]]>");
-
-  //ズーム当たり判定
-  _svg.append("rect")
-      .attr("width", _width)
-      .attr("height", _height);
 
   //X軸目盛り追加
   _svg.append("g")
