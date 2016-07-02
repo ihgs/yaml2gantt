@@ -21,18 +21,18 @@ global.document = jsdom.jsdom(`
 var _data = [
   {
     "name": "仕様書作成",
-    "start": moment().add(-1, 'days').unix()*1000,
+    "start": moment.utc().add(-1, 'days').unix()*1000,
     "end": moment().add(3, 'days').unix()*1000 + 1000 * 60 * 60 * 24
   },
   {
     "name": "コーディング",
-    "start": moment().add(3, 'days'),
-    "end": moment().add(6, 'days')
+    "start": moment.utc().add(3, 'days').unix()*1000,
+    "end": moment.utc().add(6, 'days').unix()*1000 + 1000 * 60 * 60 * 24
   },
   {
     "name": "テスト",
-    "start": moment().add(4, 'days'),
-    "end": moment().add(10, 'days')
+    "start": moment.utc().add(4, 'days').unix()*1000,
+    "end": moment.utc().add(10, 'days').unix()*1000 + 1000 * 60 * 60 * 24
   }
 ]
 
@@ -50,7 +50,7 @@ var _xAxis;
 function daysToPixels(days, timeScale) {
     var d1 = new Date();
     timeScale || (timeScale = g_timescale);
-    return timeScale(d3.timeDay.offset(d1, days)) - timeScale(d1);
+    return timeScale(d3.utcDay.offset(d1, days)) - timeScale(d1);
 }
 
 var g_timescale;
@@ -88,18 +88,18 @@ function addGradient(svg) {
 function update(){
   var backgroundFill = function (range, className) {
        var days = _weekendsGroup.selectAll("rect." + className)
-           .data(range(_xScale.invert(0), _xScale.invert(_width)));
-       days.enter()
-           .append("rect")
-           .attr("class", className);
+                     .data(range(_xScale.invert(0), _xScale.invert(_width)));
+                     days.enter()
+                     .append("rect")
+                     .attr("class", className)
+                     .attr("x", function (item) {
+                         return _xScale(item);
+                     })
+                     .attr("y", 0)
+                     .attr("width", daysToPixels(1, _xScale))
+                     .attr("height", _height);
 
        days.exit().remove();
-       days.attr("x", function (item) {
-           return _xScale(item);
-       });
-       days.attr("y", 0);
-       days.attr("width", daysToPixels(1, _xScale));
-       days.attr("height", _height);
    };
    backgroundFill(d3.utcSunday.range, "sundayBackground");
    backgroundFill(d3.utcSaturday.range, "saturdayBackground");
@@ -171,7 +171,7 @@ function init(){
   var dateEnd = new Date(now.getTime());
   dateEnd.setDate(dateEnd.getDate() + 35);
 
-  _xScale = d3.scaleTime()
+  _xScale = d3.scaleUtc()
       .domain([dateStart, dateEnd])
       .range([0, _width]);
 
@@ -195,12 +195,12 @@ function init(){
 
   //X軸表示設定
   _xAxis = d3.axisTop(_xScale)
-      .ticks(d3.timeDay.every(1))
+      .ticks(d3.utcDay.every(1))
       .tickSize(_height)
       .tickFormat(d3.timeFormat("%-d"));
 
   _monthAxis = d3.axisTop(_xScale)
-      .ticks(d3.timeMonth.every(1))
+      .ticks(d3.utcMonth.every(1))
       .tickSize(_height + 20)
       .tickFormat(d3.timeFormat("%B"));
 
