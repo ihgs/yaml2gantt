@@ -11,5 +11,5 @@ gulp.task('create_svg', function(){
 });
 
 gulp.task('watch', function(){
-  gulp.watch('./cli.js', ['create_svg']);
+  gulp.watch(['./cli.js', './src/**'], ['create_svg']);
 });
