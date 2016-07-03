@@ -36,6 +36,10 @@ rect.sundayBackground{
     fill: #FFDEDE;
 }
 
+rect.holidayBackground{
+    fill: #FFDEDE;
+}
+
 .taskName{
     font-size: 13px;
 }

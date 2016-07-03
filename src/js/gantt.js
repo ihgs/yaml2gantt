@@ -19,6 +19,8 @@ global.document = jsdom.jsdom(`
 
 var _weekendsGroup;
 var _tasksGroup;
+var _holidaysGroup;
+var _holidays;
 var _svg;
 var _monthAxis;
 var _xScale;
@@ -68,20 +70,33 @@ exports.update = function(data){
   var backgroundFill = function (range, className) {
        var days = _weekendsGroup.selectAll("rect." + className)
                      .data(range(_xScale.invert(0), _xScale.invert(_width)));
-                     days.enter()
-                     .append("rect")
-                     .attr("class", className)
-                     .attr("x", function (item) {
-                         return _xScale(item);
-                     })
-                     .attr("y", 0)
-                     .attr("width", daysToPixels(1, _xScale))
-                     .attr("height", _height);
+       days.enter()
+         .append("rect")
+         .attr("class", className)
+         .attr("x", function (item) {
+             return _xScale(item);
+         })
+         .attr("y", 0)
+         .attr("width", daysToPixels(1, _xScale))
+         .attr("height", _height);
 
        days.exit().remove();
    };
    backgroundFill(d3.utcSunday.range, "sundayBackground");
    backgroundFill(d3.utcSaturday.range, "saturdayBackground");
+
+   var holidays = _holidaysGroup.selectAll("rect." + "holidayBackground")
+                    .data(_holidays);
+   holidays.enter()
+    .append("rect")
+    .attr("class", "holidayBackground")
+    .attr("x", function (item ){
+      return _xScale(item);
+    })
+    .attr("y", 0)
+    .attr("width", daysToPixels(1, _xScale))
+    .attr("height", _height);
+   holidays.exit().remove();
 
    var tasks = _tasksGroup.selectAll("rect.taskRange")
        .data(data);
@@ -136,6 +151,8 @@ exports.init = function(range, config){
   //_height = document.querySelector(".ganttGraph").clientHeight - margin.top - margin.bottom;
   _width = config.canvas.width;
   _height = config.canvas.height;
+
+  _holidays = config.holidays;
 
   //初期表示範囲設定
   var dateStart = range.start;
@@ -198,6 +215,9 @@ exports.init = function(range, config){
 
   _weekendsGroup = _svg.append("g")
       .attr("class", "weekends");
+
+  _holidaysGroup = _svg.append("g")
+      .attr("class", "holidays");
 
   _tasksGroup = _svg.append("g")
       .attr("class", "tasks");
