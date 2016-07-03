@@ -3,6 +3,10 @@ var moment = require("moment");
 var yaml = require('js-yaml')
 var fs = require('fs')
 
+exports.config = function(config_path){
+  return yaml.safeLoad(fs.readFileSync(config_path, 'utf8'));
+}
+
 exports.parse = function(yaml_path){
   let doc = yaml.safeLoad(fs.readFileSync(yaml_path, 'utf8'));
   let range = doc.Range;
