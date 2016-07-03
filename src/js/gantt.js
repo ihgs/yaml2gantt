@@ -148,11 +148,7 @@ exports.init = function(range, config){
   g_timescale = _xScale;
 
   //曜日表示を日本語に設定
-  var ja_JP = d3.formatLocale({
-      "decimal": ".",
-      "thousands": ",",
-      "grouping": [3],
-      "currency": ["", "円"],
+  var ja_JP = {
       "dateTime": "%a %b %e %X %Y",
       "date": "%Y/%m/%d",
       "time": "%H:%M:%S",
@@ -161,18 +157,20 @@ exports.init = function(range, config){
       "shortDays": ["日", "月", "火", "水", "木", "金", "土"],
       "months": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
       "shortMonths": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
-  });
+  };
+
+  var locale = d3.timeFormatLocale(ja_JP);
 
   //X軸表示設定
   _xAxis = d3.axisTop(_xScale)
       .ticks(d3.utcDay.every(1))
       .tickSize(_height)
-      .tickFormat(d3.timeFormat("%-d"));
+      .tickFormat(locale.format("%-d"));
 
   _monthAxis = d3.axisTop(_xScale)
       .ticks(d3.utcMonth.every(1))
       .tickSize(_height + 20)
-      .tickFormat(d3.timeFormat("%B"));
+      .tickFormat(locale.format("%B"));
 
   //SVG生成
   _svg = d3.select(document.body).append("svg")
