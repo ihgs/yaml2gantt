@@ -1,7 +1,7 @@
 {
-  "name": "yaml_gantt",
+  "name": "yaml2gantt",
   "version": "0.1.0",
-  "description": "A client tool to create Ganttchart from yaml.",
+  "description": "A client tool to output Ganttchart SVG from yaml.",
   "bin": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
