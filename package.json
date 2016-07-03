@@ -12,6 +12,7 @@
   "author": "ihgs",
   "license": "MIT",
   "dependencies": {
+    "commander": "^2.9.0",
     "d3": "^4.0.0",
     "js-yaml": "^3.6.1",
     "jsdom": "^9.3.0",

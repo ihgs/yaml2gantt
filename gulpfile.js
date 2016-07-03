@@ -3,7 +3,7 @@ var run = require('gulp-run');
 var rename = require("gulp-rename");
 
 gulp.task('create_svg', function(){
-  return run('./cli.js').exec()
+  return run('./cli.js ./sample/tasks.yaml').exec()
     .pipe(rename('test.svg'))
     .pipe(gulp.dest('tmp/'))
     .pipe(rename('test.html'))
