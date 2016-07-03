@@ -1,7 +1,6 @@
 'use strict';
 
 var d3 = require("d3")
-var moment = require("moment");
 var jsdom = require('jsdom');
 var fs = require('fs');
 
@@ -15,23 +14,7 @@ global.document = jsdom.jsdom(`
 </html>
 `);
 
-var _data = [
-  {
-    "name": "仕様書作成",
-    "start": moment.utc().add(-1, 'days').unix()*1000,
-    "end": moment().add(3, 'days').unix()*1000 + 1000 * 60 * 60 * 24
-  },
-  {
-    "name": "コーディング",
-    "start": moment.utc().add(3, 'days').unix()*1000,
-    "end": moment.utc().add(6, 'days').unix()*1000 + 1000 * 60 * 60 * 24
-  },
-  {
-    "name": "テスト",
-    "start": moment.utc().add(4, 'days').unix()*1000,
-    "end": moment.utc().add(10, 'days').unix()*1000 + 1000 * 60 * 60 * 24
-  }
-]
+
 
 
 var _weekendsGroup;
@@ -42,7 +25,6 @@ var _xScale;
 var _width;
 var _height;
 var _xAxis;
-
 
 function daysToPixels(days, timeScale) {
     var d1 = new Date();
@@ -82,7 +64,7 @@ function addGradient(svg) {
         .attr("stop-opacity", 1);
 };
 
-exports.update = function(){
+exports.update = function(data){
   var backgroundFill = function (range, className) {
        var days = _weekendsGroup.selectAll("rect." + className)
                      .data(range(_xScale.invert(0), _xScale.invert(_width)));
@@ -102,7 +84,7 @@ exports.update = function(){
    backgroundFill(d3.utcSaturday.range, "saturdayBackground");
 
    var tasks = _tasksGroup.selectAll("rect.taskRange")
-       .data(_data);
+       .data(data);
 
    tasks.enter()
        .append("rect")
@@ -118,7 +100,7 @@ exports.update = function(){
    tasks.exit().remove();
 
    var text = _tasksGroup.selectAll("text.taskName")
-       .data(_data);
+       .data(data);
 
    text.enter()
        .append("text")
@@ -147,7 +129,7 @@ function load_css(){
   return fs.readFileSync("./src/css/gantt.css")
 }
 
-exports.init = function(){
+exports.init = function(range){
   var self = this;
   var margin = { top: 50, right: 20, bottom: 20, left: 20 };
   //_width = parseInt(d3.select(".ganttGraph").style("width"), 10) - margin.left - margin.right;
@@ -156,11 +138,8 @@ exports.init = function(){
   _height = 300
 
   //初期表示範囲設定
-  var now = new Date();
-  var dateStart = new Date(now.getTime());
-  dateStart.setDate(dateStart.getDate() - 3);
-  var dateEnd = new Date(now.getTime());
-  dateEnd.setDate(dateEnd.getDate() + 35);
+  var dateStart = range.start;
+  var dateEnd = range.end
 
   _xScale = d3.scaleUtc()
       .domain([dateStart, dateEnd])
