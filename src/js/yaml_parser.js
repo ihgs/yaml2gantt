@@ -30,14 +30,31 @@ exports.parse = function(yaml_path){
 
   data["resources"] = []
   let resources = doc.Resources
+  let index = 0;
   for(let key in resources){
+    let events = []
+    for(let ekey in resources[key].events){
+      events.push({
+        "name": resources[key].events[ekey].name,
+        "date": moment.utc(resources[key].events[ekey].date, _inputPattern),
+        "y_index": index
+      })
+    }
+
     let resource = {
       "id": key,
       "name": resources[key].name,
+      "y_index": index,
       "start": moment.utc(resources[key].start, _inputPattern),
-      "end": moment.utc(resources[key].end, _inputPattern).add(1, "days")
+      "end": moment.utc(resources[key].end, _inputPattern).add(1, "days"),
+      "events": events
     }
     data["resources"].push(resource)
+    index++;
+    // イベントがあれば、イベント分incrementする。
+    if (events.length > 0){
+      index++;
+    }
   }
 
   return data;

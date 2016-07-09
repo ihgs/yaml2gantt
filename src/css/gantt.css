@@ -28,6 +28,9 @@ rect.taskRange {
     stroke: #000;
 }
 
+rect.event {
+    fill: url(#gradient);
+}
 rect.saturdayBackground{
     fill: #E6ECFF;
 }

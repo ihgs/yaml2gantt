@@ -98,45 +98,71 @@ exports.update = function(data){
     .attr("height", _height);
    holidays.exit().remove();
 
-   var tasks = _tasksGroup.selectAll("rect.taskRange")
+   var tasksGroup = _tasksGroup.selectAll("rect.taskGroup")
        .data(data);
 
-   tasks.enter()
-       .append("rect")
-       .attr("class", "taskRange")
-       .attr("x", function (item) {
-          return _xScale(item.start);
-        }).attr("y", function (item, i) {
-          return i * 30 + 20
-        }).attr("width", function (item) {
-          return Math.abs(_xScale(item.end) - _xScale(item.start));
-        }).attr("height", 10);
+   var task_group = tasksGroup.enter()
+        .append("g")
 
-   tasks.exit().remove();
+   task_group.append("rect")
+     .attr("class", "taskRange")
+     .attr("x", function (item) {
+        return _xScale(item.start);
+      }).attr("y", function (item) {
+        return item.y_index * 30 + 20
+      }).attr("width", function (item) {
+        return Math.abs(_xScale(item.end) - _xScale(item.start));
+      }).attr("height", 10);
 
-   var text = _tasksGroup.selectAll("text.taskName")
-       .data(data);
+   task_group.append("text")
+        .attr("class", "taskName")
+        .text(function (item) {
+            return item.name
+        })
+        .attr("text-anchor", "end")
+        .attr("x", function (item) {
+            return _xScale(item.start) - 10
+        })
+        .attr("y", function (item) {
+            return item.y_index * 30 + 30
+        }).text(function (item){
+          return item.name;
+        });
 
-   text.enter()
-       .append("text")
-       .attr("class", "taskName")
-       .text(function (item) {
-           return item.name
-       })
-       .attr("text-anchor", "end")
-       .attr("x", function (item) {
-           return _xScale(item.start) - 10
-       })
-       .attr("y", function (item, i) {
-           return i * 30 + 30
+   var events = task_group.selectAll("rect.events")
+      .data(function(item){
+        return item.events;
+      })
+
+   events.enter()
+    .append("path")
+    .attr("class", "event")
+    .attr("transform", function(item) {
+      let y =  item.y_index * 30 + 40;
+      return "translate(" + _xScale(item.date) + "," + y + ")";
+    })
+    .attr("d", d3.symbol().type(d3.symbolTriangle));
+
+    var events_text = task_group.selectAll("rect.events.text")
+       .data(function(item){
+         return item.events;
        });
+   events_text.enter()
+    .append("text")
+    .attr("class", "eventName")
+    .attr("text-anchor", "start")
+    .attr("x", function(item){
+      return _xScale(item.date);
+    })
+    .attr("y", function(item){
+      return item.y_index * 30 + 60;
+    })
+    .text(function (item){
+      return item.name;
+    })
 
-   text.exit().remove();
-
-   //タスクのラベル表示
-   text.text(function (item) {
-       return item.name
-   })
+   events.exit().remove()
+   tasksGroup.exit().remove();
 
 };
 
