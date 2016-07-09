@@ -112,7 +112,11 @@ exports.update = function(data){
         return item.y_index * 30 + 20
       }).attr("width", function (item) {
         return Math.abs(_xScale(item.end) - _xScale(item.start));
-      }).attr("height", 10);
+      }).attr("height", 10)
+      .append("title")
+      .text(function (item){
+        return item.name;
+      })
 
    task_group.append("text")
         .attr("class", "taskName")
@@ -141,7 +145,11 @@ exports.update = function(data){
       let y =  item.y_index * 30 + 40;
       return "translate(" + _xScale(item.date) + "," + y + ")";
     })
-    .attr("d", d3.symbol().type(d3.symbolTriangle));
+    .attr("d", d3.symbol().type(d3.symbolTriangle))
+    .append("title")
+    .text(function (item){
+      return item.name;
+    })
 
     var events_text = task_group.selectAll("rect.events.text")
        .data(function(item){
