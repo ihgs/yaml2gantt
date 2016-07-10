@@ -163,8 +163,9 @@ var adjustTextLabels =
   sections_text.enter()
       .append("text")
       .attr("text-anchor", "start")
+      .attr("class", "sectionName")
       .attr("x", 0)
-      .attr("y", function(item) { return item.y_index * 30 + 20 + 12; })
+      .attr("y", function(item) { return item.y_index * 30 + 20 + 15; })
       .text(function(item) { return item.name; })
 };
 
