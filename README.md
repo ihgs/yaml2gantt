@@ -3,5 +3,5 @@
 Yaml ベースの定義ファイルから、SVG形式のガントチャートを作成
 
 ```
-./cli.js sample/tasks.yaml > sample.svg
+yaml2gantt -c config.yaml tasks.yaml > test.svg
 ```
