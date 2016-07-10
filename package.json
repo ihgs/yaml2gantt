@@ -19,7 +19,10 @@
     "moment": "^2.13.0"
   },
   "devDependencies": {
+    "eslint-plugin-node": "^2.0.0",
     "gulp": "^3.9.1",
+    "gulp-clang-format": "^1.0.23",
+    "gulp-eslint": "^3.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-run": "^1.7.1"
   }
