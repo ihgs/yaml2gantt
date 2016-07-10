@@ -28,32 +28,41 @@ exports.parse = function(yaml_path){
   data["range"]["start"] = moment.utc(range.start, _inputPattern);
   data["range"]["end"] = moment.utc(range.end, _inputPattern).add(1, "days");
 
-  data["resources"] = []
+  data["resources"] = { "tasks":[], "sections":[]}
   let resources = doc.Resources
   let index = 0;
   for(let key in resources){
-    let events = []
-    for(let ekey in resources[key].events){
-      events.push({
-        "name": resources[key].events[ekey].name,
-        "date": moment.utc(resources[key].events[ekey].date, _inputPattern),
+    let type = resources[key].type;
+    if (type == 'section'){
+      data["resources"]["sections"].push({
+        "name": resources[key].name,
         "y_index": index
       })
-    }
-
-    let resource = {
-      "id": key,
-      "name": resources[key].name,
-      "y_index": index,
-      "start": moment.utc(resources[key].start, _inputPattern),
-      "end": moment.utc(resources[key].end, _inputPattern).add(1, "days"),
-      "events": events
-    }
-    data["resources"].push(resource)
-    index++;
-    // イベントがあれば、イベント分incrementする。
-    if (events.length > 0){
       index++;
+    } else {
+      let events = []
+      for(let ekey in resources[key].events){
+        events.push({
+          "name": resources[key].events[ekey].name,
+          "date": moment.utc(resources[key].events[ekey].date, _inputPattern),
+          "y_index": index
+        })
+      }
+
+      let resource = {
+        "id": key,
+        "name": resources[key].name,
+        "y_index": index,
+        "start": moment.utc(resources[key].start, _inputPattern),
+        "end": moment.utc(resources[key].end, _inputPattern).add(1, "days"),
+        "events": events
+      }
+      data["resources"]["tasks"].push(resource)
+      index++;
+      // イベントがあれば、イベント分incrementする。
+      if (events.length > 0){
+        index++;
+      }
     }
   }
 

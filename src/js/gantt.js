@@ -18,6 +18,7 @@ global.document = jsdom.jsdom(`
 
 
 var _weekendsGroup;
+var _sectionsGroup;
 var _tasksGroup;
 var _holidaysGroup;
 var _holidays;
@@ -99,7 +100,7 @@ exports.update = function(data){
    holidays.exit().remove();
 
    var tasksGroup = _tasksGroup.selectAll("rect.taskGroup")
-       .data(data);
+       .data(data["tasks"]);
 
    var task_group = tasksGroup.enter()
         .append("g")
@@ -172,6 +173,32 @@ exports.update = function(data){
    events.exit().remove()
    tasksGroup.exit().remove();
 
+   var sections = _sectionsGroup.selectAll("path.sections")
+      .data(data["sections"])
+
+  var line = d3.line()
+      .x(function(d){ return d[0]; })
+      .y(function(d){ return d[1]; })
+   sections.enter()
+    .append("path")
+    .attr("stroke", "black")
+    .attr("fill", "none")
+    .attr("d", function(item){
+      return line([[0, item.y_index * 30 + 20],  [_width, item.y_index * 30 + 20]]);
+    });
+
+    var sections_text = _sectionsGroup.selectAll("path.sections")
+       .data(data["sections"]);
+    sections_text.enter()
+      .append("text")
+      .attr("text-anchor", "start")
+      .attr("x", 0)
+      .attr("y", function(item){
+        return item.y_index * 30 + 20 + 12;
+      })
+      .text(function (item){
+        return item.name;
+      })
 };
 
 function load_css(){
@@ -252,6 +279,9 @@ exports.init = function(range, config){
 
   _holidaysGroup = _svg.append("g")
       .attr("class", "holidays");
+
+  _sectionsGroup = _svg.append("g")
+      .attr("class", "sections");
 
   _tasksGroup = _svg.append("g")
       .attr("class", "tasks");
