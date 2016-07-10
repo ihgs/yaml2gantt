@@ -202,7 +202,7 @@ exports.update = function(data){
 };
 
 function load_css(){
-  return fs.readFileSync("./src/css/gantt.css")
+  return fs.readFileSync(__dirname + "/../css/gantt.css")
 }
 
 exports.init = function(range, config){
