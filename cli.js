@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 var cmd = require('commander')
+var fs = require('fs')
 var gant = require('./src/js/gantt.js')
 var yaml = require('./src/js/yaml_parser')
 
@@ -11,11 +12,26 @@ var program = cmd.version('0.1.0')
   .arguments('yaml_path')
   .parse(process.argv)
 
-var config_file = './config.yaml'
-if (program.config) {
-  config_file = program.config
+var config = {
+  "canvas": {
+    "width": 1000,
+    "height": 300
+  },
+  "holidays": []
 }
-var config = yaml.config(config_file)
+
+if (program.config) {
+  var config_file = program.config
+  config = yaml.config(config_file)
+} else {
+  var config_file = './config.yaml'
+  try{
+    var stat = fs.statSync(config_file);
+    if (stat != undefined && stat.isFile()){
+      config = yaml.config(config_file)
+    }
+  }catch(e){}
+}
 
 var filepath = program.args[0]
 if (filepath == undefined) {
