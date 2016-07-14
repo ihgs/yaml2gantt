@@ -2,6 +2,7 @@
 var moment = require("moment");
 var yaml = require('js-yaml');
 var fs = require('fs');
+var path = require('path');
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
@@ -15,6 +16,7 @@ exports.config = function(config_path) {
   return config;
 };
 
+var index = 0;
 exports.parse = function(yaml_path) {
   let doc = yaml.safeLoad(fs.readFileSync(yaml_path, 'utf8'));
   let range = doc.Range;
@@ -26,13 +28,15 @@ exports.parse = function(yaml_path) {
 
   data["resources"] = {"tasks" : [], "sections" : []};
   let resources = doc.Resources;
-  let index = 0;
   for (let key in resources) {
     let type = resources[key].type;
-    if (type == 'section') {
+    if (type == 'external') {
+      let _data = this.parse(path.join(path.dirname(yaml_path), resources[key].include))
+      Array.prototype.push.apply(data["resources"]["tasks"], _data["resources"]["tasks"]);
+      Array.prototype.push.apply(data["resources"]["sections"], _data["resources"]["sections"]);
+    } else if (type == 'section') {
       data["resources"]["sections"].push(
           {"name" : resources[key].name, "y_index" : index});
-      index++;
     } else {
       let events = [];
       for (let ekey in resources[key].events) {
@@ -52,12 +56,12 @@ exports.parse = function(yaml_path) {
         "events" : events
       };
       data["resources"]["tasks"].push(resource);
-      index++;
       // イベントがあれば、イベント分incrementする。
       if (events.length > 0) {
         index++;
       }
     }
+    index++;
   }
 
   return data;

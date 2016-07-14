@@ -33,3 +33,11 @@ Resources:
   DB:
     name: DB
     type: section
+  projectA:
+    type: external
+    include: projectA.yaml
+  projectB:
+    name: projectB
+    type: task
+    start: 2016/06/12
+    end: 2016/07/01

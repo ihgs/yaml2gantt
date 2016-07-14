@@ -1,0 +1,15 @@
+Range:
+  start: 2016/06/01
+  end: 2016/07/31
+Resources:
+  projectA_sec:
+    name: projectA
+    type: section
+  test:
+    name: テスト
+    type: task
+    start: 2016/07/15
+    end: 2016/07/20
+  DB:
+    name: DB
+    type: section
