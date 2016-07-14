@@ -27,38 +27,37 @@ function daysToPixels(days, timeScale) {
 
 var g_timescale;
 
-var adjustTextLabels =
-    function(selection) {
+var adjustTextLabels = function(selection) {
   selection.selectAll('.tick text')
       .attr('transform', 'translate(' + daysToPixels(1) / 2 + ',0)');
+};
+
+function addGradient(svg) {
+  var start = d3.rgb(155, 147, 230);
+  var stop = start.darker(3);
+
+  var gradient = svg.append("svg:defs")
+                     .append("svg:linearGradient")
+                     .attr("id", "gradient")
+                     .attr("x1", "0%")
+                     .attr("y1", "0%")
+                     .attr("x2", "0%")
+                     .attr("y2", "100%")
+                     .attr("spreadMethod", "pad");
+
+  // Define the gradient colors
+  gradient.append("svg:stop")
+      .attr("offset", "0%")
+      .attr("stop-color", start.toString())
+      .attr("stop-opacity", 1);
+
+  gradient.append("svg:stop")
+      .attr("offset", "100%")
+      .attr("stop-color", stop.toString())
+      .attr("stop-opacity", 1);
 }
 
-    function addGradient(svg) {
-      var start = d3.rgb(155, 147, 230);
-      var stop = start.darker(3);
-
-      var gradient = svg.append("svg:defs")
-                         .append("svg:linearGradient")
-                         .attr("id", "gradient")
-                         .attr("x1", "0%")
-                         .attr("y1", "0%")
-                         .attr("x2", "0%")
-                         .attr("y2", "100%")
-                         .attr("spreadMethod", "pad");
-
-      // Define the gradient colors
-      gradient.append("svg:stop")
-          .attr("offset", "0%")
-          .attr("stop-color", start.toString())
-          .attr("stop-opacity", 1);
-
-      gradient.append("svg:stop")
-          .attr("offset", "100%")
-          .attr("stop-color", stop.toString())
-          .attr("stop-opacity", 1);
-    }
-
-    exports.update = function(data) {
+exports.update = function(data) {
   var backgroundFill = function(range, className) {
     var days = _weekendsGroup.selectAll("rect." + className)
                    .data(range(_xScale.invert(0), _xScale.invert(_width)));
@@ -90,31 +89,31 @@ var adjustTextLabels =
 
   var tasksGroup = _tasksGroup.selectAll("rect.taskGroup").data(data["tasks"]);
 
-  var task_group = tasksGroup.enter().append("g")
+  var task_group = tasksGroup.enter().append("g");
 
   task_group.append("rect")
       .attr("class", "taskRange")
       .attr("x", function(item) { return _xScale(item.start); })
-      .attr("y", function(item) { return item.y_index * 30 + 20 })
+      .attr("y", function(item) { return item.y_index * 30 + 20; })
       .attr("width",
             function(item) {
               return Math.abs(_xScale(item.end) - _xScale(item.start));
             })
       .attr("height", 10)
       .append("title")
-      .text(function(item) { return item.name; })
+      .text(function(item) { return item.name; });
 
   task_group.append("text")
       .attr("class", "taskName")
-      .text(function(item) { return item.name })
+      .text(function(item) { return item.name; })
       .attr("text-anchor", "end")
-      .attr("x", function(item) { return _xScale(item.start) - 10 })
-      .attr("y", function(item) { return item.y_index * 30 + 30 })
+      .attr("x", function(item) { return _xScale(item.start) - 10; })
+      .attr("y", function(item) { return item.y_index * 30 + 30; })
       .text(function(item) { return item.name; });
 
   var events = task_group.selectAll("rect.events").data(function(item) {
     return item.events;
-  })
+  });
 
   events.enter()
       .append("path")
@@ -126,9 +125,9 @@ var adjustTextLabels =
             })
       .attr("d", d3.symbol().type(d3.symbolTriangle))
       .append("title")
-      .text(function(item) { return item.name; })
+      .text(function(item) { return item.name; });
 
-          var events_text =
+  var events_text =
       task_group.selectAll("rect.events.text").data(function(item) {
         return item.events;
       });
@@ -138,16 +137,16 @@ var adjustTextLabels =
       .attr("text-anchor", "start")
       .attr("x", function(item) { return _xScale(item.date); })
       .attr("y", function(item) { return item.y_index * 30 + 60; })
-      .text(function(item) { return item.name; })
+      .text(function(item) { return item.name; });
 
-  events.exit().remove()
+  events.exit().remove();
   tasksGroup.exit().remove();
 
-  var sections = _sectionsGroup.selectAll("path.sections")
-                     .data(data["sections"])
+  var sections =
+      _sectionsGroup.selectAll("path.sections").data(data["sections"]);
 
-                         var line =
-      d3.line().x(function(d) { return d[0]; }).y(function(d) { return d[1]; })
+  var line =
+      d3.line().x(function(d) { return d[0]; }).y(function(d) { return d[1]; });
   sections.enter()
       .append("path")
       .attr("stroke", "black")
@@ -166,10 +165,10 @@ var adjustTextLabels =
       .attr("class", "sectionName")
       .attr("x", 0)
       .attr("y", function(item) { return item.y_index * 30 + 20 + 15; })
-      .text(function(item) { return item.name; })
+      .text(function(item) { return item.name; });
 };
 
-function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css") }
+function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
 
 exports.init = function(range, config) {
   var margin = {top : 50, right : 20, bottom : 20, left : 20};
@@ -184,7 +183,7 @@ exports.init = function(range, config) {
 
   //初期表示範囲設定
   var dateStart = range.start;
-  var dateEnd = range.end
+  var dateEnd = range.end;
 
   _xScale = d3.scaleUtc().domain([ dateStart, dateEnd ]).range([ 0, _width ]);
 
@@ -230,7 +229,7 @@ exports.init = function(range, config) {
              .attr("height", _height + margin.top + margin.bottom)
              .append("g")
              .attr("transform",
-                   "translate(" + margin.left + "," + margin.top + ")")
+                   "translate(" + margin.left + "," + margin.top + ")");
 
   // css
   _svg.append("defs").append("style").text("<![CDATA[" + load_css() + "]]>");
@@ -256,4 +255,4 @@ exports.init = function(range, config) {
   _tasksGroup = _svg.append("g").attr("class", "tasks");
 
   addGradient(_svg);
-}
+};

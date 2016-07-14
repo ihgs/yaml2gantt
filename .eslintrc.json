@@ -11,6 +11,7 @@
     "env": {"browser": true, "node": true},
     "globals": {},
     "rules": {
-      "node/no-unsupported-features": [2, {"version": 5}]
+      "node/no-unsupported-features": [2, {"version": 5}],
+      "semi": "error"
     }
 }

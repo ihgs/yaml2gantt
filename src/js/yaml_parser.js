@@ -5,8 +5,7 @@ var fs = require('fs');
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
-exports.config =
-    function(config_path) {
+exports.config = function(config_path) {
   let config = yaml.safeLoad(fs.readFileSync(config_path, 'utf8'));
   let holidays = [];
   for (let index in config.holidays) {
@@ -14,9 +13,9 @@ exports.config =
   }
   config.holidays = holidays;
   return config;
-}
+};
 
-    exports.parse = function(yaml_path) {
+exports.parse = function(yaml_path) {
   let doc = yaml.safeLoad(fs.readFileSync(yaml_path, 'utf8'));
   let range = doc.Range;
   let data = {};
@@ -26,13 +25,13 @@ exports.config =
   data["range"]["end"] = moment.utc(range.end, _inputPattern).add(1, "days");
 
   data["resources"] = {"tasks" : [], "sections" : []};
-  let resources = doc.Resources
+  let resources = doc.Resources;
   let index = 0;
   for (let key in resources) {
     let type = resources[key].type;
     if (type == 'section') {
       data["resources"]["sections"].push(
-          {"name" : resources[key].name, "y_index" : index})
+          {"name" : resources[key].name, "y_index" : index});
       index++;
     } else {
       let events = [];
@@ -41,7 +40,7 @@ exports.config =
           "name" : resources[key].events[ekey].name,
           "date" : moment.utc(resources[key].events[ekey].date, _inputPattern),
           "y_index" : index
-        })
+        });
       }
 
       let resource = {
@@ -52,7 +51,7 @@ exports.config =
         "end" : moment.utc(resources[key].end, _inputPattern).add(1, "days"),
         "events" : events
       };
-      data["resources"]["tasks"].push(resource)
+      data["resources"]["tasks"].push(resource);
       index++;
       // イベントがあれば、イベント分incrementする。
       if (events.length > 0) {
@@ -62,4 +61,4 @@ exports.config =
   }
 
   return data;
-}
+};
