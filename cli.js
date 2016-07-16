@@ -9,6 +9,7 @@ var program = cmd.version('0.1.0')
   .command('yaml2gantt')
   .usage('[options] <file>')
   .option('-c, --config <config>', 'Set config file path')
+  .option('-o, --output <output_file>', 'Output to file')
   .arguments('yaml_path')
   .parse(process.argv)
 
@@ -43,4 +44,9 @@ var data = yaml.parse(filepath)
 gant.init(data.range, config);
 gant.update(data.resources);
 
-console.log('<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML)
+var output_file = program.output
+if (output_file == undefined ){
+  console.log('<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML)
+} else {
+  fs.writeFileSync(output_file, '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML);
+}
