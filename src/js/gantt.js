@@ -18,6 +18,7 @@ var _xScale;
 var _width;
 var _height;
 var _xAxis;
+var _rowHeight = 30;
 
 function daysToPixels(days, timeScale) {
   let d1 = new Date();
@@ -94,7 +95,7 @@ exports.update = function(data) {
   task_group.append("rect")
       .attr("class", "taskRange")
       .attr("x", function(item) { return _xScale(item.start); })
-      .attr("y", function(item) { return item.y_index * 30 + 20; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20; })
       .attr("width",
             function(item) {
               return Math.abs(_xScale(item.end) - _xScale(item.start));
@@ -108,7 +109,7 @@ exports.update = function(data) {
       .text(function(item) { return item.name; })
       .attr("text-anchor", "end")
       .attr("x", function(item) { return _xScale(item.start) - 10; })
-      .attr("y", function(item) { return item.y_index * 30 + 30; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 30; })
       .text(function(item) { return item.name; });
 
   var events = task_group.selectAll("rect.events").data(function(item) {
@@ -120,7 +121,7 @@ exports.update = function(data) {
       .attr("class", "event")
       .attr("transform",
             function(item) {
-              let y = item.y_index * 30 + 40;
+              let y = item.y_index * _rowHeight + 40;
               return "translate(" + _xScale(item.date) + "," + y + ")";
             })
       .attr("d", d3.symbol().type(d3.symbolTriangle))
@@ -136,7 +137,7 @@ exports.update = function(data) {
       .attr("class", "eventName")
       .attr("text-anchor", "start")
       .attr("x", function(item) { return _xScale(item.date); })
-      .attr("y", function(item) { return item.y_index * 30 + 60; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 60; })
       .text(function(item) { return item.name; });
 
   events.exit().remove();
@@ -153,7 +154,8 @@ exports.update = function(data) {
       .attr("fill", "none")
       .attr("d", function(item) {
         return line([
-          [ 0, item.y_index * 30 + 20 ], [ _width, item.y_index * 30 + 20 ]
+          [ 0, item.y_index * _rowHeight + 20 ],
+          [ _width, item.y_index * _rowHeight + 20 ]
         ]);
       });
 
@@ -164,7 +166,7 @@ exports.update = function(data) {
       .attr("text-anchor", "start")
       .attr("class", "sectionName")
       .attr("x", 0)
-      .attr("y", function(item) { return item.y_index * 30 + 20 + 15; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
       .text(function(item) { return item.name; });
 };
 
@@ -172,10 +174,7 @@ function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
 
 exports.init = function(range, config) {
   var margin = {top : 50, right : 20, bottom : 20, left : 20};
-  //_width = parseInt(d3.select(".ganttGraph").style("width"), 10) - margin.left
-  //- margin.right;
-  //_height = document.querySelector(".ganttGraph").clientHeight - margin.top -
-  // margin.bottom;
+
   _width = config.canvas.width;
   _height = config.canvas.height;
 
@@ -189,27 +188,7 @@ exports.init = function(range, config) {
 
   g_timescale = _xScale;
 
-  //曜日表示を日本語に設定
-  var ja_JP = {
-    "dateTime" : "%a %b %e %X %Y",
-    "date" : "%Y/%m/%d",
-    "time" : "%H:%M:%S",
-    "periods" : [ "AM", "PM" ],
-    "days" : [
-      "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"
-    ],
-    "shortDays" : [ "日", "月", "火", "水", "木", "金", "土" ],
-    "months" : [
-      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
-      "11月", "12月"
-    ],
-    "shortMonths" : [
-      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
-      "11月", "12月"
-    ]
-  };
-
-  var locale = d3.timeFormatLocale(ja_JP);
+  var locale = d3.timeFormatLocale(config.timeFormatLocale);
 
   // X軸表示設定
   _xAxis = d3.axisTop(_xScale)

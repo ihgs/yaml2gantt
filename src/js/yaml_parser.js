@@ -13,6 +13,25 @@ exports.config = function(config_path) {
     holidays.push(moment.utc(config.holidays[index], _inputPattern));
   }
   config.holidays = holidays;
+  config.timeFormatLocale = {
+    "dateTime" : "%a %b %e %X %Y",
+    "date" : "%Y/%m/%d",
+    "time" : "%H:%M:%S",
+    "periods" : [ "AM", "PM" ],
+    "days" : [
+      "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"
+    ],
+    "shortDays" : [ "日", "月", "火", "水", "木", "金", "土" ],
+    "months" : [
+      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
+      "11月", "12月"
+    ],
+    "shortMonths" : [
+      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
+      "11月", "12月"
+    ]
+  };
+
   return config;
 };
 
@@ -31,9 +50,12 @@ exports.parse = function(yaml_path) {
   for (let key in resources) {
     let type = resources[key].type;
     if (type == 'external') {
-      let _data = this.parse(path.join(path.dirname(yaml_path), resources[key].include))
-      Array.prototype.push.apply(data["resources"]["tasks"], _data["resources"]["tasks"]);
-      Array.prototype.push.apply(data["resources"]["sections"], _data["resources"]["sections"]);
+      let _data = this.parse(
+          path.join(path.dirname(yaml_path), resources[key].include));
+      Array.prototype.push.apply(data["resources"]["tasks"],
+                                 _data["resources"]["tasks"]);
+      Array.prototype.push.apply(data["resources"]["sections"],
+                                 _data["resources"]["sections"]);
     } else if (type == 'section') {
       data["resources"]["sections"].push(
           {"name" : resources[key].name, "y_index" : index});
