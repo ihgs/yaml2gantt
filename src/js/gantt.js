@@ -19,6 +19,7 @@ var _width;
 var _height;
 var _xAxis;
 var _rowHeight = 30;
+var _locale;
 
 function daysToPixels(days, timeScale) {
   let d1 = new Date();
@@ -172,6 +173,16 @@ exports.update = function(data) {
 
 function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
 
+function every_day(d){
+  return _locale.format("%-d")(d);
+}
+
+function every_week(d){
+  if (d.getDay() == 1){
+    return _locale.format("%-d")(d);
+  }
+}
+
 exports.init = function(range, config) {
   var margin = {top : 50, right : 20, bottom : 20, left : 20};
 
@@ -188,18 +199,24 @@ exports.init = function(range, config) {
 
   g_timescale = _xScale;
 
-  var locale = d3.timeFormatLocale(config.timeFormatLocale);
+  _locale = d3.timeFormatLocale(config.timeFormatLocale);
+
+  if (config.dateLabelType == "every_week"){
+    var dateLabelType = every_week;
+  }else {
+    var dateLabelType = every_day;
+  }
 
   // X軸表示設定
   _xAxis = d3.axisTop(_xScale)
                .ticks(d3.utcDay.every(1))
                .tickSize(_height)
-               .tickFormat(locale.format("%-d"));
+               .tickFormat(dateLabelType);
 
   _monthAxis = d3.axisTop(_xScale)
                    .ticks(d3.utcMonth.every(1))
                    .tickSize(_height + 20)
-                   .tickFormat(locale.format("%B"));
+                   .tickFormat(_locale.format("%B"));
 
   // SVG生成
   _svg = d3.select(document.body)

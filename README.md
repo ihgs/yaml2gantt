@@ -13,6 +13,7 @@ config.yaml
 canvas:
   width: 1000
   height: 300
+dateLabelType: every_day
 holidays:
   - 2016/01/01
   - 2016/01/11
