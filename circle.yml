@@ -1,0 +1,9 @@
+machine:
+  node:
+    version: v5.2.0
+general:
+  artifacts:
+    - "tmp/test.html"
+test:
+  override:
+    - gulp create_html

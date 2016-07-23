@@ -5,11 +5,17 @@ Resources:
   projectA_sec:
     name: projectA
     type: section
+  fd:
+    name: 機能設計
+    type: task
+    start: 2016/07/01
+    end: 2016/07/14
+  pg:
+    name: コーディング
+    start: 2016/07/15
+    end: 2016/07/29
   test:
     name: テスト
     type: task
-    start: 2016/07/15
-    end: 2016/07/20
-  DB:
-    name: DB
-    type: section
+    start: 2016/08/01
+    end: 2016/08/10

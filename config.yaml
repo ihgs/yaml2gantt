@@ -1,7 +1,7 @@
 canvas:
   width: 1000
-  height: 300
-dateLabelType: every_day
+  height: 500
+dateLabelType: every_week
 holidays:
   - 2016/01/01
   - 2016/01/11

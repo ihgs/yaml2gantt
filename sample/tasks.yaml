@@ -1,43 +1,11 @@
 Range:
   start: 2016/06/01
-  end: 2016/07/31
+  end: 2016/08/31
 Resources:
-  frontend:
-    name: フロントエンド
-    type: section
-  bd:
-    name: 仕様書作成
-    type: task
-    start: 2016/06/20
-    end: 2016/06/30
-    events:
-      - name: 内部レビュー
-        date: 2016/06/25
-      - name: 外部レビュー
-        date: 2016/06/30
-  coding:
-    name: コーディング
-    type: task
-    start: 2016/07/01
-    end: 2016/07/10
-    events:
-      - name: 内部レビュー
-        date: 2016/07/08
-      - name: 外部レビュー
-        date: 2016/07/10
-  test:
-    name: テスト
-    type: task
-    start: 2016/07/11
-    end: 2016/07/18
-  DB:
-    name: DB
-    type: section
+
   projectA:
     type: external
     include: projectA.yaml
   projectB:
-    name: projectB
-    type: task
-    start: 2016/06/12
-    end: 2016/07/01
+    type: external
+    include: projectB.yaml
