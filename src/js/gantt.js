@@ -34,29 +34,6 @@ var adjustTextLabels = function(selection) {
       .attr('transform', 'translate(' + daysToPixels(1) / 2 + ',0)');
 };
 
-function addGradient(defs) {
-  var start = d3.rgb(155, 147, 230);
-  var stop = start.darker(3);
-
-  var gradient = defs.append("svg:linearGradient")
-                     .attr("id", "gradient")
-                     .attr("x1", "0%")
-                     .attr("y1", "0%")
-                     .attr("x2", "0%")
-                     .attr("y2", "100%")
-                     .attr("spreadMethod", "pad");
-
-  // Define the gradient colors
-  gradient.append("svg:stop")
-      .attr("offset", "0%")
-      .attr("stop-color", start.toString())
-      .attr("stop-opacity", 1);
-
-  gradient.append("svg:stop")
-      .attr("offset", "100%")
-      .attr("stop-color", stop.toString())
-      .attr("stop-opacity", 1);
-}
 
 exports.update = function(data) {
   var backgroundFill = function(range, className) {
@@ -225,7 +202,6 @@ exports.init = function(range, config) {
 
   // css
   var defs = base_svg.append("defs");
-  addGradient(defs);
   defs.append("style").text("<![CDATA[" + load_css() + "]]>");
 
   _svg = base_svg.append("g").attr("transform", "translate(" + margin.left +

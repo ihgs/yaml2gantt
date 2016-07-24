@@ -24,8 +24,9 @@ text {
     font-size: 11px;
 }
 rect.taskRange {
-    fill: url(#gradient);
+    fill: #5d588a;
     stroke: #000;
+    stroke-width: 0.5;
 }
 
 rect.event {
