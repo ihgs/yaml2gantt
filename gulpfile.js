@@ -4,11 +4,15 @@ var rename = require("gulp-rename");
 var gulpClangFormat = require("gulp-clang-format");
 var gulpEslint = require("gulp-eslint");
 
+gulp.task('create_html', function(){
+  return run('./cli.js -f html ./sample/tasks.yaml').exec()
+    .pipe(rename('test.html'))
+    .pipe(gulp.dest('tmp/'))
+});
+
 gulp.task('create_svg', function(){
   return run('./cli.js ./sample/tasks.yaml').exec()
     .pipe(rename('test.svg'))
-    .pipe(gulp.dest('tmp/'))
-    .pipe(rename('test.html'))
     .pipe(gulp.dest('tmp/'))
 });
 

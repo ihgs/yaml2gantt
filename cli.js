@@ -10,6 +10,7 @@ var program = cmd.version('0.1.0')
   .usage('[options] <file>')
   .option('-c, --config <config>', 'Set config file path')
   .option('-o, --output <output_file>', 'Output to file')
+  .option('-f, --format <svg|html>', 'Output format')
   .arguments('yaml_path')
   .parse(process.argv)
 
@@ -44,9 +45,19 @@ var data = yaml.parse(filepath)
 gant.init(data.range, config);
 gant.update(data.resources);
 
-var output_file = program.output
-if (output_file == undefined ){
-  console.log('<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML)
+var output_file = program.output;
+var format = program.format;
+var out;
+if ( format == 'svg' || format == undefined){
+  out = '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML;
+} else if (format == 'html') {
+  out = '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>'+ document.body.innerHTML + '</body></html>'
 } else {
-  fs.writeFileSync(output_file, '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML);
+  console.error('Format:' + format + ' is not supported.')
+  process.exit(1);
+}
+if (output_file == undefined ){
+  console.log(out)
+} else {
+  fs.writeFileSync(output_file, out);
 }
