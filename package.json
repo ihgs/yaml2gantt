@@ -1,6 +1,6 @@
 {
   "name": "yaml2gantt",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A client tool to output Ganttchart SVG from yaml.",
   "bin": "cli.js",
   "scripts": {
