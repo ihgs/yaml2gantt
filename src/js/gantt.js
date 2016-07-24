@@ -34,12 +34,11 @@ var adjustTextLabels = function(selection) {
       .attr('transform', 'translate(' + daysToPixels(1) / 2 + ',0)');
 };
 
-function addGradient(svg) {
+function addGradient(defs) {
   var start = d3.rgb(155, 147, 230);
   var stop = start.darker(3);
 
-  var gradient = svg.append("svg:defs")
-                     .append("svg:linearGradient")
+  var gradient = defs.append("svg:linearGradient")
                      .attr("id", "gradient")
                      .attr("x1", "0%")
                      .attr("y1", "0%")
@@ -218,17 +217,19 @@ exports.init = function(range, config) {
                    .tickFormat(_locale.format("%B"));
 
   // SVG生成
-  _svg = d3.select(document.body)
-             .append("svg")
-             .attr("width", _width + margin.left + margin.right)
-             .attr("height", _height + margin.top + margin.bottom)
-             .attr("xmlns", "http://www.w3.org/2000/svg")
-             .append("g")
-             .attr("transform",
-                   "translate(" + margin.left + "," + margin.top + ")");
+  var base_svg = d3.select(document.body)
+                     .append("svg")
+                     .attr("width", _width + margin.left + margin.right)
+                     .attr("height", _height + margin.top + margin.bottom)
+                     .attr("xmlns", "http://www.w3.org/2000/svg");
 
   // css
-  _svg.append("defs").append("style").text("<![CDATA[" + load_css() + "]]>");
+  var defs = base_svg.append("defs");
+  addGradient(defs);
+  defs.append("style").text("<![CDATA[" + load_css() + "]]>");
+
+  _svg = base_svg.append("g").attr("transform", "translate(" + margin.left +
+                                                    "," + margin.top + ")");
 
   // X軸目盛り追加
   _svg.append("g")
@@ -250,5 +251,4 @@ exports.init = function(range, config) {
 
   _tasksGroup = _svg.append("g").attr("class", "tasks");
 
-  addGradient(_svg);
 };
