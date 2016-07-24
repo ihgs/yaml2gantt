@@ -223,6 +223,7 @@ exports.init = function(range, config) {
              .append("svg")
              .attr("width", _width + margin.left + margin.right)
              .attr("height", _height + margin.top + margin.bottom)
+             .attr("xmlns", "http://www.w3.org/2000/svg")
              .append("g")
              .attr("transform",
                    "translate(" + margin.left + "," + margin.top + ")");
