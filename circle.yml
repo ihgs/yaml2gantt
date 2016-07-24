@@ -3,7 +3,7 @@ machine:
     version: v5.2.0
 general:
   artifacts:
-    - "tmp/test.html"
+    - "tmp/test.svg"
 test:
   override:
-    - gulp create_html
+    - gulp create_svg
