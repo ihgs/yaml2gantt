@@ -173,12 +173,10 @@ exports.update = function(data) {
 
 function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
 
-function every_day(d){
-  return _locale.format("%-d")(d);
-}
+function every_day(d) { return _locale.format("%-d")(d); }
 
-function every_week(d){
-  if (d.getDay() == 1){
+function every_week(d) {
+  if (d.getDay() == 1) {
     return _locale.format("%-d")(d);
   }
 }
@@ -201,10 +199,11 @@ exports.init = function(range, config) {
 
   _locale = d3.timeFormatLocale(config.timeFormatLocale);
 
-  if (config.dateLabelType == "every_week"){
-    var dateLabelType = every_week;
-  }else {
-    var dateLabelType = every_day;
+  var dateLabelType;
+  if (config.dateLabelType == "every_week") {
+    dateLabelType = every_week;
+  } else {
+    dateLabelType = every_day;
   }
 
   // X軸表示設定

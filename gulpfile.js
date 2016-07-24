@@ -11,7 +11,7 @@ gulp.task('create_html', function(){
 });
 
 gulp.task('create_svg', function(){
-  return run('./cli.js ./sample/tasks.yaml').exec()
+  return run('./cli.js -f svg ./sample/tasks.yaml').exec()
     .pipe(rename('test.svg'))
     .pipe(gulp.dest('tmp/'))
 });

@@ -3,7 +3,7 @@
 Yaml ベースの定義ファイルから、SVG形式のガントチャートを作成
 
 ```
-yaml2gantt -c config.yaml -o test.svg tasks.yaml
+yaml2gantt -c config.yaml -o test.html tasks.yaml
 ```
 
 [sample](https://circleci.com/api/v1/project/ihgs/yaml2gantt/latest/artifacts/0//home/ubuntu/yaml2gantt/tmp/test.html)

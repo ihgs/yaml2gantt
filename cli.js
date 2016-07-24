@@ -8,9 +8,9 @@ var yaml = require('./src/js/yaml_parser')
 var program = cmd.version('0.1.0')
   .command('yaml2gantt')
   .usage('[options] <file>')
-  .option('-c, --config <config>', 'Set config file path')
+  .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
   .option('-o, --output <output_file>', 'Output to file')
-  .option('-f, --format <svg|html>', 'Output format')
+  .option('-f, --format <html|svg>', 'Output format ')
   .arguments('yaml_path')
   .parse(process.argv)
 
@@ -46,11 +46,11 @@ gant.init(data.range, config);
 gant.update(data.resources);
 
 var output_file = program.output;
-var format = program.format;
+var format = program.format || 'html';
 var out;
-if ( format == 'svg' || format == undefined){
+if ( format == 'svg'){
   out = '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML;
-} else if (format == 'html') {
+} else if (format == 'html' ) {
   out = '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>'+ document.body.innerHTML + '</body></html>'
 } else {
   console.error('Format:' + format + ' is not supported.')
