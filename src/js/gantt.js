@@ -3,6 +3,7 @@
 var d3 = require("d3");
 var jsdom = require('jsdom');
 var fs = require('fs');
+var resource = require('./resources/resource.js');
 
 global.document =
     jsdom.jsdom('<!DOCTYPE html><html><head></head><body></body></html>');
@@ -36,7 +37,7 @@ var adjustTextLabels = function(selection) {
 };
 
 exports.update = function(data) {
-  var backgroundFill = function(range, className) {
+  let backgroundFill = function(range, className) {
     var days = _weekendsGroup.selectAll("rect." + className)
                    .data(range(_xScale.invert(0), _xScale.invert(_width)));
     days.enter()
@@ -52,7 +53,7 @@ exports.update = function(data) {
   backgroundFill(d3.utcSunday.range, "sundayBackground");
   backgroundFill(d3.utcSaturday.range, "saturdayBackground");
 
-  var holidays = _holidaysGroup
+  let holidays = _holidaysGroup
                      .selectAll("rect." +
                                 "holidayBackground")
                      .data(_holidays);
@@ -65,97 +66,10 @@ exports.update = function(data) {
       .attr("height", _height);
   holidays.exit().remove();
 
-  var tasksGroup = _tasksGroup.selectAll("rect.taskGroup").data(data["tasks"]);
+  resource.tasks(_tasksGroup, data, _rowHeight, _width, _xScale);
+  resource.sections(_sectionsGroup, data, _rowHeight, _width);
+  resource.subsections(_subsectionsGroup, data, _rowHeight);
 
-  var task_group = tasksGroup.enter().append("g");
-
-  task_group.append("rect")
-      .attr("class", "taskRange")
-      .attr("x", function(item) { return _xScale(item.start); })
-      .attr("y", function(item) { return item.y_index * _rowHeight + 20; })
-      .attr("width",
-            function(item) {
-              return Math.abs(_xScale(item.end) - _xScale(item.start));
-            })
-      .attr("height", 10)
-      .append("title")
-      .text(function(item) { return item.name; });
-
-  task_group.append("text")
-      .attr("class", "taskName")
-      .text(function(item) { return item.name; })
-      .attr("text-anchor", "end")
-      .attr("x", function(item) { return _xScale(item.start) - 10; })
-      .attr("y", function(item) { return item.y_index * _rowHeight + 30; })
-      .text(function(item) { return item.name; });
-
-  var events = task_group.selectAll("rect.events").data(function(item) {
-    return item.events;
-  });
-
-  events.enter()
-      .append("path")
-      .attr("class", "event")
-      .attr("transform",
-            function(item) {
-              let y = item.y_index * _rowHeight + 40;
-              return "translate(" + _xScale(item.date) + "," + y + ")";
-            })
-      .attr("d", d3.symbol().type(d3.symbolTriangle))
-      .append("title")
-      .text(function(item) { return item.name; });
-
-  var events_text =
-      task_group.selectAll("rect.events.text").data(function(item) {
-        return item.events;
-      });
-  events_text.enter()
-      .append("text")
-      .attr("class", "eventName")
-      .attr("text-anchor", "start")
-      .attr("x", function(item) { return _xScale(item.date); })
-      .attr("y", function(item) { return item.y_index * _rowHeight + 60; })
-      .text(function(item) { return item.name; });
-
-  events.exit().remove();
-  tasksGroup.exit().remove();
-
-  var sections =
-      _sectionsGroup.selectAll("path.sections").data(data["sections"]);
-
-  var line =
-      d3.line().x(function(d) { return d[0]; }).y(function(d) { return d[1]; });
-  sections.enter()
-      .append("path")
-      .attr("stroke", "black")
-      .attr("fill", "none")
-      .attr("d", function(item) {
-        return line([
-          [ 0, item.y_index * _rowHeight + 20 ],
-          [ _width, item.y_index * _rowHeight + 20 ]
-        ]);
-      });
-
-  var sections_text =
-      _sectionsGroup.selectAll("path.sections").data(data["sections"]);
-  sections_text.enter()
-      .append("text")
-      .attr("text-anchor", "start")
-      .attr("class", "sectionName")
-      .attr("x", 0)
-      .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
-      .text(function(item) { return item.name; });
-
-  var subsections_text =
-      _subsectionsGroup.selectAll("path.subsections").data(data["subsections"]);
-
-  subsections_text.enter()
-      .append("text")
-      .attr("text-anchor", "start")
-      .attr("class", "subsectionName")
-      .attr("x", 0)
-      .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
-      .text(function(item) { return item.name; });
 };
 
 function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
@@ -169,7 +83,7 @@ function every_week(d) {
 }
 
 exports.init = function(range, config) {
-  var margin = {top : 50, right : 20, bottom : 20, left : 20};
+  let margin = {top : 50, right : 20, bottom : 20, left : 20};
 
   _width = config.canvas.width;
   _height = config.canvas.height;
@@ -177,8 +91,8 @@ exports.init = function(range, config) {
   _holidays = config.holidays;
 
   //初期表示範囲設定
-  var dateStart = range.start;
-  var dateEnd = range.end;
+  let dateStart = range.start;
+  let dateEnd = range.end;
 
   _xScale = d3.scaleUtc().domain([ dateStart, dateEnd ]).range([ 0, _width ]);
 
@@ -186,7 +100,7 @@ exports.init = function(range, config) {
 
   _locale = d3.timeFormatLocale(config.timeFormatLocale);
 
-  var dateLabelType;
+  let dateLabelType;
   if (config.dateLabelType == "every_week") {
     dateLabelType = every_week;
   } else {
@@ -205,14 +119,14 @@ exports.init = function(range, config) {
                    .tickFormat(_locale.format("%B"));
 
   // SVG生成
-  var base_svg = d3.select(document.body)
+  let base_svg = d3.select(document.body)
                      .append("svg")
                      .attr("width", _width + margin.left + margin.right)
                      .attr("height", _height + margin.top + margin.bottom)
                      .attr("xmlns", "http://www.w3.org/2000/svg");
 
   // css
-  var defs = base_svg.append("defs");
+  let defs = base_svg.append("defs");
   defs.append("style").text("<![CDATA[" + load_css() + "]]>");
 
   _svg = base_svg.append("g").attr("transform", "translate(" + margin.left +
@@ -231,13 +145,10 @@ exports.init = function(range, config) {
       .call(_monthAxis);
 
   _weekendsGroup = _svg.append("g").attr("class", "weekends");
-
   _holidaysGroup = _svg.append("g").attr("class", "holidays");
 
   _sectionsGroup = _svg.append("g").attr("class", "sections");
-
   _subsectionsGroup = _svg.append("g").attr("class", "subsections");
-
   _tasksGroup = _svg.append("g").attr("class", "tasks");
 
 };
