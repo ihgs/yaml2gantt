@@ -45,7 +45,7 @@ exports.parse = function(yaml_path) {
   data["range"]["start"] = moment.utc(range.start, _inputPattern);
   data["range"]["end"] = moment.utc(range.end, _inputPattern).add(1, "days");
 
-  data["resources"] = {"tasks" : [], "sections" : []};
+  data["resources"] = {"tasks" : [], "sections" : [], "subsections" : []};
   let resources = doc.Resources;
   for (let key in resources) {
     let type = resources[key].type;
@@ -56,8 +56,13 @@ exports.parse = function(yaml_path) {
                                  _data["resources"]["tasks"]);
       Array.prototype.push.apply(data["resources"]["sections"],
                                  _data["resources"]["sections"]);
+      Array.prototype.push.apply(data["resources"]["subsections"],
+                                 _data["resources"]["subsections"]);
     } else if (type == 'section') {
       data["resources"]["sections"].push(
+          {"name" : resources[key].name, "y_index" : index});
+    } else if (type == 'subsection') {
+      data["resources"]["subsections"].push(
           {"name" : resources[key].name, "y_index" : index});
     } else {
       let events = [];

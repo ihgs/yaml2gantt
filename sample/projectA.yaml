@@ -5,6 +5,9 @@ Resources:
   projectA_sec:
     name: projectA
     type: section
+  projectA_subsec:
+    name: フロントエンド
+    type: subsection
   fd:
     name: 機能設計
     type: task

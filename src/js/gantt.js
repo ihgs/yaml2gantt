@@ -9,6 +9,7 @@ global.document =
 
 var _weekendsGroup;
 var _sectionsGroup;
+var _subsectionsGroup;
 var _tasksGroup;
 var _holidaysGroup;
 var _holidays;
@@ -33,7 +34,6 @@ var adjustTextLabels = function(selection) {
   selection.selectAll('.tick text')
       .attr('transform', 'translate(' + daysToPixels(1) / 2 + ',0)');
 };
-
 
 exports.update = function(data) {
   var backgroundFill = function(range, className) {
@@ -145,6 +145,17 @@ exports.update = function(data) {
       .attr("x", 0)
       .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
       .text(function(item) { return item.name; });
+
+  var subsections_text =
+      _subsectionsGroup.selectAll("path.subsections").data(data["subsections"]);
+
+  subsections_text.enter()
+      .append("text")
+      .attr("text-anchor", "start")
+      .attr("class", "subsectionName")
+      .attr("x", 0)
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
+      .text(function(item) { return item.name; });
 };
 
 function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
@@ -224,6 +235,8 @@ exports.init = function(range, config) {
   _holidaysGroup = _svg.append("g").attr("class", "holidays");
 
   _sectionsGroup = _svg.append("g").attr("class", "sections");
+
+  _subsectionsGroup = _svg.append("g").attr("class", "subsections");
 
   _tasksGroup = _svg.append("g").attr("class", "tasks");
 
