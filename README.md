@@ -70,6 +70,7 @@ yaml形式でタスクの情報を記述
 
 指定できるリソースタイプは以下
 * section
+* subsection
 * task
 * external
 
@@ -77,7 +78,9 @@ yaml形式でタスクの情報を記述
 
 区切り線を引き、名前を表示する。
 
+#### subsection
 
+下線付きで名前を表示する。
 
 #### task
 
