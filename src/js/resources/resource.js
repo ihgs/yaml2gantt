@@ -15,3 +15,10 @@ exports.sections = function(_sectionsGroup, data, _rowHeight, _width) {
 exports.subsections = function(_subsectionsGroup, data, _rowHeight) {
   subsection.subsections(_subsectionsGroup, data, _rowHeight);
 };
+
+exports.withinPriod = function(data, type, start, end) {
+  if (type == 'task') {
+    return task.withinPriod(data, start, end);
+  }
+  return false;
+};

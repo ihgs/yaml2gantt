@@ -1,6 +1,9 @@
 'use strict';
 
 var d3 = require("d3");
+var moment = require("moment");
+
+var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
 exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
 
@@ -58,4 +61,16 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
 
   events.exit().remove();
   tasksGroup.exit().remove();
+};
+
+exports.withinPriod = function(task, start, end) {
+  let s = moment.utc(task.start, _inputPattern);
+  let e = moment.utc(task.start, _inputPattern);
+  if (s == undefined || e == undefined) {
+    return false;
+  }
+  if (start > e || s > end) {
+    return false;
+  }
+  return true;
 };

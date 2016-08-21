@@ -3,6 +3,7 @@ var moment = require("moment");
 var yaml = require('js-yaml');
 var fs = require('fs');
 var loader = require('./loader.js');
+var resource = require('./resources/resource.js');
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
@@ -42,21 +43,28 @@ function merge(base, other) {
 }
 
 var index = 0;
-exports.parse = function(yaml_path) {
+exports.parse = function(yaml_path, start, end) {
   let doc = yaml.safeLoad(loader.load(yaml_path));
   let range = doc.Range;
   let data = {};
 
   data["range"] = {};
-  data["range"]["start"] = moment.utc(range.start, _inputPattern);
-  data["range"]["end"] = moment.utc(range.end, _inputPattern).add(1, "days");
+  if (start == undefined) {
+    start = moment.utc(range.start, _inputPattern);
+  }
+  if (end == undefined) {
+    end = moment.utc(range.end, _inputPattern).add(1, "days");
+  }
+  data["range"]["start"] = start;
+  data["range"]["end"] = end;
 
   data["resources"] = {"tasks" : [], "sections" : [], "subsections" : []};
   let resources = doc.Resources;
   for (let key in resources) {
     let type = resources[key].type;
     if (type == 'external') {
-      let _data = this.parse(loader.join(yaml_path, resources[key].include));
+      let _data = this.parse(loader.join(yaml_path, resources[key].include),
+                             start, end);
       merge(data["resources"], _data["resources"]);
     } else if (type == 'section') {
       data["resources"]["sections"].push(
@@ -65,6 +73,9 @@ exports.parse = function(yaml_path) {
       data["resources"]["subsections"].push(
           {"name" : resources[key].name, "y_index" : index});
     } else {
+      if (!resource.withinPriod(resources[key], "task", start, end)) {
+        continue;
+      }
       let events = [];
       for (let ekey in resources[key].events) {
         events.push({
