@@ -3,6 +3,7 @@ var moment = require("moment");
 var yaml = require('js-yaml');
 var fs = require('fs');
 var path = require('path');
+var loader = require('./loader.js')
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
@@ -37,7 +38,7 @@ exports.config = function(config_path) {
 
 var index = 0;
 exports.parse = function(yaml_path) {
-  let doc = yaml.safeLoad(fs.readFileSync(yaml_path, 'utf8'));
+  let doc = yaml.safeLoad(loader.load(yaml_path));
   let range = doc.Range;
   let data = {};
 
@@ -50,8 +51,8 @@ exports.parse = function(yaml_path) {
   for (let key in resources) {
     let type = resources[key].type;
     if (type == 'external') {
-      let _data = this.parse(
-          path.join(path.dirname(yaml_path), resources[key].include));
+      let _data = this.parse(loader.join(yaml_path, resources[key].include));
+
       Array.prototype.push.apply(data["resources"]["tasks"],
                                  _data["resources"]["tasks"]);
       Array.prototype.push.apply(data["resources"]["sections"],
