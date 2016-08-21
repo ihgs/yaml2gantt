@@ -2,8 +2,7 @@
 var moment = require("moment");
 var yaml = require('js-yaml');
 var fs = require('fs');
-var path = require('path');
-var loader = require('./loader.js')
+var loader = require('./loader.js');
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
@@ -36,6 +35,12 @@ exports.config = function(config_path) {
   return config;
 };
 
+function merge(base, other) {
+  for (let key in base) {
+    Array.prototype.push.apply(base[key], other[key]);
+  }
+}
+
 var index = 0;
 exports.parse = function(yaml_path) {
   let doc = yaml.safeLoad(loader.load(yaml_path));
@@ -52,13 +57,7 @@ exports.parse = function(yaml_path) {
     let type = resources[key].type;
     if (type == 'external') {
       let _data = this.parse(loader.join(yaml_path, resources[key].include));
-
-      Array.prototype.push.apply(data["resources"]["tasks"],
-                                 _data["resources"]["tasks"]);
-      Array.prototype.push.apply(data["resources"]["sections"],
-                                 _data["resources"]["sections"]);
-      Array.prototype.push.apply(data["resources"]["subsections"],
-                                 _data["resources"]["subsections"]);
+      merge(data["resources"], _data["resources"]);
     } else if (type == 'section') {
       data["resources"]["sections"].push(
           {"name" : resources[key].name, "y_index" : index});
@@ -75,7 +74,7 @@ exports.parse = function(yaml_path) {
         });
       }
 
-      let resource = {
+      let task = {
         "id" : key,
         "name" : resources[key].name,
         "y_index" : index,
@@ -83,8 +82,8 @@ exports.parse = function(yaml_path) {
         "end" : moment.utc(resources[key].end, _inputPattern).add(1, "days"),
         "events" : events
       };
-      data["resources"]["tasks"].push(resource);
-      // イベントがあれば、イベント分incrementする。
+      data["resources"]["tasks"].push(task);
+      // イベントがあれば、イベントを表示する分を確保するためインクリメントする。
       if (events.length > 0) {
         index++;
       }
