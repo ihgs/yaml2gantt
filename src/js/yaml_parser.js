@@ -43,7 +43,7 @@ function merge(base, other) {
 }
 
 var index = 0;
-exports.parse = function(yaml_path, start, end) {
+exports.parse = function(yaml_path, start, end, key_prefix) {
   let doc = yaml.safeLoad(loader.load(yaml_path));
   let range = doc.Range;
   let data = {};
@@ -55,6 +55,10 @@ exports.parse = function(yaml_path, start, end) {
   if (end == undefined) {
     end = moment.utc(range.end, _inputPattern).add(1, "days");
   }
+  if (key_prefix == undefined) {
+    key_prefix = '';
+  }
+
   data["range"]["start"] = start;
   data["range"]["end"] = end;
 
@@ -64,7 +68,7 @@ exports.parse = function(yaml_path, start, end) {
     let type = resources[key].type;
     if (type == 'external') {
       let _data = this.parse(loader.join(yaml_path, resources[key].include),
-                             start, end);
+                             start, end, key + "::");
       merge(data["resources"], _data["resources"]);
     } else if (type == 'section') {
       data["resources"]["sections"].push(
@@ -86,7 +90,7 @@ exports.parse = function(yaml_path, start, end) {
       }
 
       let task = {
-        "id" : key,
+        "id" : key_prefix + key,
         "name" : resources[key].name,
         "y_index" : index,
         "start" : moment.utc(resources[key].start, _inputPattern),
