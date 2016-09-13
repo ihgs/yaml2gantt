@@ -56,3 +56,10 @@ rect.holidayBackground{
     font-size: 13px;
     text-decoration: underline;
 }
+
+rect.comparedTaskRange {
+    fill: #ffff99;
+    stroke: #000;
+    stroke-width: 0.3;
+    stroke-dasharray: 12 3;
+}

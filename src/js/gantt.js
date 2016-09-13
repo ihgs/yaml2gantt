@@ -12,6 +12,7 @@ var _weekendsGroup;
 var _sectionsGroup;
 var _subsectionsGroup;
 var _tasksGroup;
+var _comparedTasksGroup;
 var _holidaysGroup;
 var _holidays;
 var _svg;
@@ -67,6 +68,8 @@ exports.update = function(data) {
   holidays.exit().remove();
 
   resource.tasks(_tasksGroup, data, _rowHeight, _width, _xScale);
+  resource.comparedTasks(_comparedTasksGroup, data, _rowHeight, _width,
+                         _xScale);
   resource.sections(_sectionsGroup, data, _rowHeight, _width);
   resource.subsections(_subsectionsGroup, data, _rowHeight);
 
@@ -150,5 +153,6 @@ exports.init = function(range, config) {
   _sectionsGroup = _svg.append("g").attr("class", "sections");
   _subsectionsGroup = _svg.append("g").attr("class", "subsections");
   _tasksGroup = _svg.append("g").attr("class", "tasks");
+  _comparedTasksGroup = _svg.append("g").attr("class", "comparedTasks");
 
 };

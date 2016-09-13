@@ -1,11 +1,17 @@
 'use strict';
 
 var task = require('./task.js');
+var comparedTask = require('./comparedTask.js');
 var section = require('./section.js');
 var subsection = require('./subsection.js');
 
 exports.tasks = function(_taskGroup, data, _rowHeight, _width, _xScale) {
   task.tasks(_taskGroup, data, _rowHeight, _width, _xScale);
+};
+
+exports.comparedTasks = function(_taskGroup, data, _rowHeight, _width,
+                                 _xScale) {
+  comparedTask.tasks(_taskGroup, data, _rowHeight, _width, _xScale);
 };
 
 exports.sections = function(_sectionsGroup, data, _rowHeight, _width) {

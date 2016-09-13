@@ -11,6 +11,7 @@ var program = cmd.version('0.1.0')
   .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
   .option('-o, --output <output_file>', 'Output to file')
   .option('-f, --format <html|svg>', 'Output format ')
+  .option(',--compare <compare_file>', 'Set file which you want to compare')
   .arguments('yaml_path')
   .parse(process.argv)
 
@@ -58,8 +59,22 @@ if (filepath == undefined) {
   program.help();
 }
 
-var data = yaml.parse(filepath)
-
+var compare_file = program.compare
+if (compare_file == undefined){
+  var data = yaml.parse(filepath)
+}else {
+  var data = yaml.parse(filepath)
+  var compare_data = yaml.parse(compare_file, data["range"]["start"], data["range"]["end"])
+  data["resources"]["compared_tasks"] = []
+  for (let key in data["resources"]["tasks"]) {
+    for( let cKey in compare_data["resources"]["tasks"]){
+      if (data["resources"]["tasks"][key]["id"] == compare_data["resources"]["tasks"][cKey]["id"]){
+        compare_data["resources"]["tasks"][cKey]["y_index"] = data["resources"]["tasks"][key]["y_index"];
+        data["resources"]["compared_tasks"].push(compare_data["resources"]["tasks"][cKey]);
+      }
+    }
+  }
+}
 gant.init(data.range, config);
 gant.update(data.resources);
 

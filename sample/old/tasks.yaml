@@ -1,0 +1,11 @@
+Range:
+  start: 2016/06/01
+  end: 2016/08/31
+Resources:
+
+  projectA:
+    type: external
+    include: projectA.yaml
+  projectB:
+    type: external
+    include: projectB.yaml
