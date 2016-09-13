@@ -6,4 +6,5 @@ general:
     - "tmp/test.html"
 test:
   override:
+    - gulp check
     - gulp create_html
