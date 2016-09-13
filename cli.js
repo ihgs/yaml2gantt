@@ -11,7 +11,7 @@ var program = cmd.version('0.1.0')
   .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
   .option('-o, --output <output_file>', 'Output to file')
   .option('-f, --format <html|svg>', 'Output format ')
-  .option(',--compare <compare_file>', 'Set file which you want to compare')
+  .option('--compare <compare_file>', 'Set file which you want to compare')
   .arguments('yaml_path')
   .parse(process.argv)
 

@@ -6,8 +6,19 @@ Yaml ベースの定義ファイルから、SVG形式のガントチャートを
 yaml2gantt -c config.yaml -o test.html tasks.yaml
 ```
 
-[sample](https://circleci.com/api/v1/project/ihgs/yaml2gantt/latest/artifacts/0//home/ubuntu/yaml2gantt/tmp/test.html)
+![sample](./doc/images/senpyo.png)
 
+## スケジュール比較
+
+compareオプション(--compare)でtaskファイルを指定。  
+resource名が一致するtaskが存在する場合、スケジュールバーの直上に
+指定されたtaskのスケジュールバー(黄色)を表示
+
+```
+yaml2gantt --compare sample/old/tasks.yaml -o test.html sample/tasks.yaml
+```
+
+![compare](./doc/images/compare.png)
 
 
 ## 設定ファイル
