@@ -4,6 +4,7 @@ var d3 = require("d3");
 var moment = require("moment");
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
+var barHeight = 10;
 
 exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
 
@@ -19,7 +20,7 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
             function(item) {
               return Math.abs(_xScale(item.end) - _xScale(item.start));
             })
-      .attr("height", 10)
+      .attr("height", barHeight)
       .append("title")
       .text(function(item) { return item.name; });
 
