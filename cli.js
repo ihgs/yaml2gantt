@@ -4,6 +4,7 @@ var cmd = require('commander')
 var fs = require('fs')
 var gant = require('./src/js/gantt.js')
 var yaml = require('./src/js/yaml_parser')
+var conf = require('config')
 
 var program = cmd.version('0.1.0')
   .command('yaml2gantt')
@@ -16,29 +17,7 @@ var program = cmd.version('0.1.0')
   .parse(process.argv)
 
 var config = {
-  "canvas": {
-    "width": 1000,
-    "height": 300
-  },
-  "holidays": [],
-  "timeFormatLocale": {
-    "dateTime" : "%a %b %e %X %Y",
-    "date" : "%Y/%m/%d",
-    "time" : "%H:%M:%S",
-    "periods" : [ "AM", "PM" ],
-    "days" : [
-      "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"
-    ],
-    "shortDays" : [ "日", "月", "火", "水", "木", "金", "土" ],
-    "months" : [
-      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
-      "11月", "12月"
-    ],
-    "shortMonths" : [
-      "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月",
-      "11月", "12月"
-    ]
-  }
+  "holidays": []
 }
 
 if (program.config) {
@@ -53,6 +32,8 @@ if (program.config) {
     }
   }catch(e){}
 }
+
+conf.util.extendDeep(conf, config)
 
 var filepath = program.args[0]
 if (filepath == undefined) {
@@ -75,7 +56,7 @@ if (compare_file == undefined){
     }
   }
 }
-gant.init(data.range, config);
+gant.init(data.range);
 gant.update(data.resources);
 
 var output_file = program.output;
