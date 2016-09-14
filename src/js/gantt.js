@@ -3,7 +3,6 @@
 var d3 = require("d3");
 var jsdom = require('jsdom');
 var fs = require('fs');
-var conf = require('config');
 var resource = require('./resources/resource.js');
 
 global.document =
@@ -22,6 +21,7 @@ var _xScale;
 var _width;
 var _height;
 var _xAxis;
+var _rowHeight = 30;
 var _locale;
 
 function daysToPixels(days, timeScale) {
@@ -67,10 +67,11 @@ exports.update = function(data) {
       .attr("height", _height);
   holidays.exit().remove();
 
-  resource.tasks(_tasksGroup, data, _xScale);
-  resource.comparedTasks(_comparedTasksGroup, data, _xScale);
-  resource.sections(_sectionsGroup, data);
-  resource.subsections(_subsectionsGroup, data);
+  resource.tasks(_tasksGroup, data, _rowHeight, _width, _xScale);
+  resource.comparedTasks(_comparedTasksGroup, data, _rowHeight, _width,
+                         _xScale);
+  resource.sections(_sectionsGroup, data, _rowHeight, _width);
+  resource.subsections(_subsectionsGroup, data, _rowHeight);
 
 };
 
@@ -84,13 +85,13 @@ function every_week(d) {
   }
 }
 
-exports.init = function(range) {
+exports.init = function(range, config) {
   let margin = {top : 50, right : 20, bottom : 20, left : 20};
 
-  _width = conf.canvas.width;
-  _height = conf.canvas.height;
+  _width = config.canvas.width;
+  _height = config.canvas.height;
 
-  _holidays = conf.holidays;
+  _holidays = config.holidays;
 
   //初期表示範囲設定
   let dateStart = range.start;
@@ -100,10 +101,10 @@ exports.init = function(range) {
 
   g_timescale = _xScale;
 
-  _locale = d3.timeFormatLocale(conf.timeFormatLocale);
+  _locale = d3.timeFormatLocale(config.timeFormatLocale);
 
   let dateLabelType;
-  if (conf.dateLabelType == "every_week") {
+  if (config.dateLabelType == "every_week") {
     dateLabelType = every_week;
   } else {
     dateLabelType = every_day;

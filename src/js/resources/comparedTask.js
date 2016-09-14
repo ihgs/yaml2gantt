@@ -1,8 +1,7 @@
 'use strict';
 
-var conf = require("config");
-
-exports.tasks = function(_comparedTasksGroup, data, _xScale) {
+exports.tasks = function(_comparedTasksGroup, data, _rowHeight, _width,
+                         _xScale) {
   if (data["compared_tasks"] == undefined) {
     return;
   }
@@ -14,16 +13,12 @@ exports.tasks = function(_comparedTasksGroup, data, _xScale) {
   task_group.append("rect")
       .attr("class", "comparedTaskRange")
       .attr("x", function(item) { return _xScale(item.start); })
-      .attr("y",
-            function(item) {
-              return item.y_index * conf.canvas.rowHeight + 20 -
-                     conf.task.barHeight;
-            })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20 - 10; })
       .attr("width",
             function(item) {
               return Math.abs(_xScale(item.end) - _xScale(item.start));
             })
-      .attr("height", conf.task.barHeight)
+      .attr("height", 10)
       .append("title")
       .text(function(item) { return item.name; });
   tasksGroup.exit().remove();

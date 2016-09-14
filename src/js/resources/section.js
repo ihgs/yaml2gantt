@@ -1,9 +1,8 @@
 'use strict';
 
 var d3 = require("d3");
-var conf = require("config");
 
-exports.sections = function(_sectionsGroup, data) {
+exports.sections = function(_sectionsGroup, data, _rowHeight, _width) {
   let sections =
       _sectionsGroup.selectAll("path.sections").data(data["sections"]);
 
@@ -15,8 +14,8 @@ exports.sections = function(_sectionsGroup, data) {
       .attr("fill", "none")
       .attr("d", function(item) {
         return line([
-          [ 0, item.y_index * conf.canvas.rowHeight + 20 ],
-          [ conf.canvas.width, item.y_index * conf.canvas.rowHeight + 20 ]
+          [ 0, item.y_index * _rowHeight + 20 ],
+          [ _width, item.y_index * _rowHeight + 20 ]
         ]);
       });
 
@@ -27,9 +26,6 @@ exports.sections = function(_sectionsGroup, data) {
       .attr("text-anchor", "start")
       .attr("class", "sectionName")
       .attr("x", 0)
-      .attr("y",
-            function(item) {
-              return item.y_index * conf.canvas.rowHeight + 20 + 15;
-            })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20 + 15; })
       .text(function(item) { return item.name; });
 };

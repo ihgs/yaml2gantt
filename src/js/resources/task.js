@@ -2,11 +2,11 @@
 
 var d3 = require("d3");
 var moment = require("moment");
-var conf = require("config");
 
 var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
+var barHeight = 10;
 
-exports.tasks = function(_tasksGroup, data, _xScale) {
+exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
 
   let tasksGroup = _tasksGroup.selectAll("rect.taskGroup").data(data["tasks"]);
 
@@ -15,14 +15,12 @@ exports.tasks = function(_tasksGroup, data, _xScale) {
   task_group.append("rect")
       .attr("class", "taskRange")
       .attr("x", function(item) { return _xScale(item.start); })
-      .attr(
-          "y",
-          function(item) { return item.y_index * conf.canvas.rowHeight + 20; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 20; })
       .attr("width",
             function(item) {
               return Math.abs(_xScale(item.end) - _xScale(item.start));
             })
-      .attr("height", conf.task.barHeight)
+      .attr("height", barHeight)
       .append("title")
       .text(function(item) { return item.name; });
 
@@ -31,9 +29,7 @@ exports.tasks = function(_tasksGroup, data, _xScale) {
       .text(function(item) { return item.name; })
       .attr("text-anchor", "end")
       .attr("x", function(item) { return _xScale(item.start) - 10; })
-      .attr(
-          "y",
-          function(item) { return item.y_index * conf.canvas.rowHeight + 30; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 30; })
       .text(function(item) { return item.name; });
 
   let events = task_group.selectAll("rect.events").data(function(item) {
@@ -45,7 +41,7 @@ exports.tasks = function(_tasksGroup, data, _xScale) {
       .attr("class", "event")
       .attr("transform",
             function(item) {
-              let y = item.y_index * conf.canvas.rowHeight + 40;
+              let y = item.y_index * _rowHeight + 40;
               return "translate(" + _xScale(item.date) + "," + y + ")";
             })
       .attr("d", d3.symbol().type(d3.symbolTriangle))
@@ -61,9 +57,7 @@ exports.tasks = function(_tasksGroup, data, _xScale) {
       .attr("class", "eventName")
       .attr("text-anchor", "start")
       .attr("x", function(item) { return _xScale(item.date); })
-      .attr(
-          "y",
-          function(item) { return item.y_index * conf.canvas.rowHeight + 60; })
+      .attr("y", function(item) { return item.y_index * _rowHeight + 60; })
       .text(function(item) { return item.name; });
 
   events.exit().remove();
