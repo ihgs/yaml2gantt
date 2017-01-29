@@ -5,13 +5,13 @@ var gulpClangFormat = require("gulp-clang-format");
 var gulpEslint = require("gulp-eslint");
 
 gulp.task('create_html', function(){
-  return run('./cli.js -f html ./sample/tasks.yaml').exec()
+  return run('./cli.js -f html --stdout ./sample/tasks.yaml').exec()
     .pipe(rename('test.html'))
     .pipe(gulp.dest('tmp/'))
 });
 
 gulp.task('create_svg', function(){
-  return run('./cli.js -f svg ./sample/tasks.yaml').exec()
+  return run('./cli.js -f svg --stdout ./sample/tasks.yaml').exec()
     .pipe(rename('test.svg'))
     .pipe(gulp.dest('tmp/'))
 });
