@@ -132,8 +132,8 @@ exports.init = function(range, config) {
   let defs = base_svg.append("defs");
   defs.append("style").text("<![CDATA[" + load_css() + "]]>");
 
-  _svg = base_svg.append("g").attr("transform", "translate(" + margin.left +
-                                                    "," + margin.top + ")");
+  _svg = base_svg.append("g").attr(
+      "transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // X軸目盛り追加
   _svg.append("g")
