@@ -1,6 +1,6 @@
 machine:
   node:
-    version: v5.2.0
+    version: v6.0.0
 general:
   artifacts:
     - "tmp/test.html"

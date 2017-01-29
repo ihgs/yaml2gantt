@@ -1,7 +1,11 @@
 {
   "name": "yaml2gantt",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A client tool to output Ganttchart SVG from yaml.",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "engineStrict": true,
   "bin": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -17,6 +21,7 @@
     "js-yaml": "^3.6.1",
     "jsdom": "^9.8.2",
     "moment": "^2.13.0",
+    "svg2png": "^4.1.1",
     "sync-request": "^3.0.1"
   },
   "devDependencies": {

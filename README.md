@@ -8,6 +8,10 @@ yaml2gantt -c config.yaml -o test.html tasks.yaml
 
 ![sample](./doc/images/senpyo.png)
 
+## 動作環境
+
+* Node v6以上
+
 ## スケジュール比較
 
 compareオプション(--compare)でtaskファイルを指定。  

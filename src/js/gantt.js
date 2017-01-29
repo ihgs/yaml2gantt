@@ -132,6 +132,11 @@ exports.init = function(range, config) {
   let defs = base_svg.append("defs");
   defs.append("style").text("<![CDATA[" + load_css() + "]]>");
 
+  base_svg.append('rect')
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "white");
+
   _svg = base_svg.append("g").attr(
       "transform", "translate(" + margin.left + "," + margin.top + ")");
 
