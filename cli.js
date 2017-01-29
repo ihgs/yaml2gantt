@@ -2,6 +2,7 @@
 'use strict';
 var cmd = require('commander')
 var fs = require('fs')
+var path = require('path')
 var svg2png = require('svg2png')
 var gant = require('./src/js/gantt.js')
 var yaml = require('./src/js/yaml_parser')
@@ -10,9 +11,10 @@ var program = cmd.version('0.1.0')
   .command('yaml2gantt')
   .usage('[options] <file>')
   .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
-  .option('-o, --output <output_file>', 'Output to file')
-  .option('-f, --format <html|svg|png>', 'Output format. If png is set, output option is required.')
+  .option('-o, --output <output_file>', 'Output to a specified file. [Default: input filename + ext in current directory.')
+  .option('-f, --format <html|svg|png>', 'Output format.')
   .option('--compare <compare_file>', 'Set file which you want to compare')
+  .option('--stdout', 'Output to stdout [Default: output to a file.]')
   .arguments('yaml_path')
   .parse(process.argv)
 
@@ -81,6 +83,8 @@ gant.update(data.resources);
 
 var output_file = program.output;
 var format = program.format || 'html';
+var stdout = program.stdout;
+
 var out;
 if ( format == 'svg' || format == 'png'){
   out = '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML;
@@ -90,14 +94,17 @@ if ( format == 'svg' || format == 'png'){
   console.error('Format:' + format + ' is not supported.')
   process.exit(1);
 }
-if (output_file == undefined ){
-  if(format == 'png'){
-    console.error('output option is required when format is png.')
+if ( stdout ){
+  if ( format == 'png' ){
+    console.error('stdout option is not used when format is png.');
     process.exit(1);
-  }else {
-    console.log(out)
   }
+  console.log(out);
 } else {
+  if ( output_file == undefined ){
+    let filename = path.basename(filepath);
+    output_file = filename.replace(path.extname(filepath), '.'+format);
+  }
   if (format == 'png' ){
     svg2png(out)
       .then(buffer => fs.writeFileSync(output_file,buffer))
