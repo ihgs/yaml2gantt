@@ -2,11 +2,13 @@
 
 var d3 = require("d3");
 var jsdom = require('jsdom');
+const {JSDOM} = jsdom;
 var fs = require('fs');
 var resource = require('./resources/resource.js');
 
 global.document =
-    jsdom.jsdom('<!DOCTYPE html><html><head></head><body></body></html>');
+    (new JSDOM('<!DOCTYPE html><html><head></head><body></body></html>'))
+        .window.document;
 
 var _weekendsGroup;
 var _sectionsGroup;
