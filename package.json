@@ -22,7 +22,7 @@
     "jsdom": "^9.8.2",
     "moment": "^2.13.0",
     "svg2png": "^4.1.1",
-    "sync-request": "^3.0.1"
+    "sync-request": "^4.0.3"
   },
   "devDependencies": {
     "eslint-plugin-node": "^4.2.1",
