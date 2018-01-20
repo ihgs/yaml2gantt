@@ -7,7 +7,6 @@ var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 var barHeight = 10;
 
 exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
-
   let tasksGroup = _tasksGroup.selectAll("rect.taskGroup").data(data["tasks"]);
 
   let task_group = tasksGroup.enter().append("g");
@@ -32,9 +31,8 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
       .attr("y", function(item) { return item.y_index * _rowHeight + 30; })
       .text(function(item) { return item.name; });
 
-  let events = task_group.selectAll("rect.events").data(function(item) {
-    return item.events;
-  });
+  let events = task_group.selectAll("rect.events")
+                   .data(function(item) { return item.events; });
 
   events.enter()
       .append("path")
@@ -48,10 +46,8 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
       .append("title")
       .text(function(item) { return item.name; });
 
-  let events_text =
-      task_group.selectAll("rect.events.text").data(function(item) {
-        return item.events;
-      });
+  let events_text = task_group.selectAll("rect.events.text")
+                        .data(function(item) { return item.events; });
   events_text.enter()
       .append("text")
       .attr("class", "eventName")

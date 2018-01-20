@@ -74,7 +74,6 @@ exports.update = function(data) {
                          _xScale);
   resource.sections(_sectionsGroup, data, _rowHeight, _width);
   resource.subsections(_subsectionsGroup, data, _rowHeight);
-
 };
 
 function load_css() { return fs.readFileSync(__dirname + "/../css/gantt.css"); }
@@ -139,8 +138,8 @@ exports.init = function(range, config) {
       .attr("height", "100%")
       .attr("fill", "white");
 
-  _svg = base_svg.append("g").attr(
-      "transform", "translate(" + margin.left + "," + margin.top + ")");
+  _svg = base_svg.append("g").attr("transform", "translate(" + margin.left +
+                                                    "," + margin.top + ")");
 
   // X軸目盛り追加
   _svg.append("g")
@@ -161,5 +160,4 @@ exports.init = function(range, config) {
   _subsectionsGroup = _svg.append("g").attr("class", "subsections");
   _tasksGroup = _svg.append("g").attr("class", "tasks");
   _comparedTasksGroup = _svg.append("g").attr("class", "comparedTasks");
-
 };

@@ -1,7 +1,6 @@
 'use strict';
 
 exports.subsections = function(_subsectionsGroup, data, _rowHeight) {
-
   let subsections_text =
       _subsectionsGroup.selectAll("path.subsections").data(data["subsections"]);
 

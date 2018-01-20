@@ -1,5 +1,7 @@
 # 線表作成ツール
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ihgs/yaml2gantt.svg)](https://greenkeeper.io/)
+
 Yaml ベースの定義ファイルから、SVG形式のガントチャートを作成
 
 ```
