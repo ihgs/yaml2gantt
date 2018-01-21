@@ -10,9 +10,33 @@ yaml2gantt -c config.yaml -o test.html tasks.yaml
 
 ![sample](./doc/images/senpyo.png)
 
+
+出力形式は、html,svg,png を指定できます。(-f option)
+また入力ファイルは、ローカルファイル以外に、Webページ(http,https)も指定可能です。
+
+```
+yaml2gantt https://raw.githubusercontent.com/ihgs/yaml2gantt/master/sample/tasks.yaml
+```
+
 ## 動作環境
 
 * Node v6以上
+
+## 使用方法
+
+```
+  Usage: yaml2gantt [options] <file>
+
+  Options:
+
+    -c, --config <config>        Set config path. default to ./config.yaml
+    -o, --output <output_file>   Output to a specified file. [Default: input filename + ext in current directory.
+    -f, --format <html|svg|png>  Output format.
+    --compare <compare_file>     Set file which you want to compare
+    --stdout                     Output to stdout [Default: output to a file.]
+    -h, --help                   output usage information
+```
+
 
 ## スケジュール比較
 
