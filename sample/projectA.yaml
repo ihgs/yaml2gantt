@@ -16,9 +16,9 @@ Resources:
   pg:
     name: コーディング
     start: 2016/07/15
-    end: 2016/07/29
+    end: 2016/08/04
   test:
     name: テスト
     type: task
-    start: 2016/08/01
-    end: 2016/08/10
+    start: 2016/08/05
+    end: 2016/08/18
