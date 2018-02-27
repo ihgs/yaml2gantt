@@ -1,10 +1,10 @@
 'use strict';
 
-var d3 = require("d3");
-var moment = require("moment");
+const d3 = require("d3");
+const moment = require("moment");
 
-var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
-var barHeight = 10;
+const _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
+const barHeight = 10;
 
 exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
   let tasksGroup = _tasksGroup.selectAll("rect.taskGroup").data(data["tasks"]);

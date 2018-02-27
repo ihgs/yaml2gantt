@@ -1,11 +1,11 @@
 'use strict';
-var moment = require("moment");
-var yaml = require('js-yaml');
-var fs = require('fs');
-var loader = require('./loader.js');
-var resource = require('./resources/resource.js');
+const moment = require("moment");
+const yaml = require('js-yaml');
+const fs = require('fs');
+const loader = require('./loader.js');
+const resource = require('./resources/resource.js');
 
-var _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
+const _inputPattern = [ "MM/DD", "YYYYY/MM/DD" ];
 
 exports.config = function(config_path) {
   let config = yaml.safeLoad(fs.readFileSync(config_path, 'utf8'));
@@ -42,7 +42,7 @@ function merge(base, other) {
   }
 }
 
-var index = 0;
+let index = 0;
 exports.parse = function(yaml_path, start, end, key_prefix) {
   let doc = yaml.safeLoad(loader.load(yaml_path));
   let range = doc.Range;

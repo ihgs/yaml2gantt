@@ -1,6 +1,6 @@
 'use strict';
 
-var d3 = require("d3");
+const d3 = require("d3");
 
 exports.sections = function(_sectionsGroup, data, _rowHeight, _width) {
   let sections =

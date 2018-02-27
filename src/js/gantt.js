@@ -1,30 +1,30 @@
 'use strict';
 
-var d3 = require("d3");
-var jsdom = require('jsdom');
+const d3 = require("d3");
+const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-var fs = require('fs');
-var resource = require('./resources/resource.js');
+const fs = require('fs');
+const resource = require('./resources/resource.js');
 
 global.document =
     (new JSDOM('<!DOCTYPE html><html><head></head><body></body></html>'))
         .window.document;
 
-var _weekendsGroup;
-var _sectionsGroup;
-var _subsectionsGroup;
-var _tasksGroup;
-var _comparedTasksGroup;
-var _holidaysGroup;
-var _holidays;
-var _svg;
-var _monthAxis;
-var _xScale;
-var _width;
-var _height;
-var _xAxis;
-var _rowHeight = 30;
-var _locale;
+let _weekendsGroup;
+let _sectionsGroup;
+let _subsectionsGroup;
+let _tasksGroup;
+let _comparedTasksGroup;
+let _holidaysGroup;
+let _holidays;
+let _svg;
+let _monthAxis;
+let _xScale;
+let _width;
+let _height;
+let _xAxis;
+let _rowHeight = 30;
+let _locale;
 
 function daysToPixels(days, timeScale) {
   let d1 = new Date();
@@ -32,16 +32,16 @@ function daysToPixels(days, timeScale) {
   return timeScale(d3.utcDay.offset(d1, days)) - timeScale(d1);
 }
 
-var g_timescale;
+let g_timescale;
 
-var adjustTextLabels = function(selection) {
+const adjustTextLabels = function(selection) {
   selection.selectAll('.tick text')
       .attr('transform', 'translate(' + daysToPixels(1) / 2 + ',0)');
 };
 
 exports.update = function(data) {
-  let backgroundFill = function(range, className) {
-    var days = _weekendsGroup.selectAll("rect." + className)
+  const backgroundFill = function(range, className) {
+    let days = _weekendsGroup.selectAll("rect." + className)
                    .data(range(_xScale.invert(0), _xScale.invert(_width)));
     days.enter()
         .append("rect")

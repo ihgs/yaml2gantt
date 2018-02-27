@@ -1,7 +1,7 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var request = require('sync-request');
+const fs = require('fs');
+const path = require('path');
+const request = require('sync-request');
 
 exports.load = function(path) {
   if (path.startsWith('http')) {
