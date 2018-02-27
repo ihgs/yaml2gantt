@@ -13,7 +13,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "./node_modules/gulp-clang-format/node_modules/clang-format/index.js -i -style=\"file\" ",
+      "./node_modules/.bin/prettier-eslint  --write",
       "eslint",
       "git add"
     ]
@@ -40,7 +40,10 @@
     "gulp-rename": "^1.2.2",
     "gulp-run": "^1.7.1",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0"
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.0",
+    "prettier-eslint": "^8.8.1",
+    "prettier-eslint-cli": "^4.7.1"
   },
   "repository": {
     "type": "git",
