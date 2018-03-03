@@ -1,7 +1,7 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var request = require('sync-request');
+const fs = require('fs');
+const path = require('path');
+const request = require('sync-request');
 
 exports.load = function(path) {
   if (path.startsWith('http')) {
@@ -13,7 +13,7 @@ exports.load = function(path) {
 
 exports.join = function(uri, filename) {
   if (uri.startsWith('http://') || uri.startsWith('https://')) {
-    return uri + "/../" + filename;
+    return uri + '/../' + filename;
   } else {
     return path.join(path.dirname(uri), filename);
   }
@@ -24,4 +24,6 @@ function http(url) {
   return res.getBody('utf8');
 }
 
-function file(uri) { return fs.readFileSync(uri, 'utf8'); }
+function file(uri) {
+  return fs.readFileSync(uri, 'utf8');
+}

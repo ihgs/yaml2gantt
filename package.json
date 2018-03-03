@@ -8,7 +8,15 @@
   "engineStrict": true,
   "bin": "cli.js",
   "scripts": {
+    "precommit": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "./node_modules/.bin/prettier-eslint  --write",
+      "eslint",
+      "git add"
+    ]
   },
   "keywords": [
     "ganttchart"
@@ -25,12 +33,17 @@
     "sync-request": "^4.0.3"
   },
   "devDependencies": {
-    "eslint-plugin-node": "^6.0.0",
+    "eslint-plugin-node": "^6.0.1",
     "gulp": "^3.9.1",
     "gulp-clang-format": "^1.0.23",
     "gulp-eslint": "^4.0.1",
     "gulp-rename": "^1.2.2",
-    "gulp-run": "^1.7.1"
+    "gulp-run": "^1.7.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.0",
+    "prettier-eslint": "^8.8.1",
+    "prettier-eslint-cli": "^4.7.1"
   },
   "repository": {
     "type": "git",

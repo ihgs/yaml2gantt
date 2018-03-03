@@ -12,6 +12,8 @@
     "globals": {},
     "rules": {
       "node/no-unsupported-features": [2, {"version": 6}],
-      "semi": "error"
+      "semi": "error",
+      "no-console": "off",
+      "quotes": ["error", "single"]
     }
 }
