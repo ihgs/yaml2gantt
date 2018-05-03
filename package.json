@@ -30,7 +30,7 @@
     "jsdom": "^11.0.0",
     "moment": "^2.13.0",
     "svg2png": "^4.1.1",
-    "sync-request": "^4.0.3"
+    "sync-request": "^5.0.0"
   },
   "devDependencies": {
     "eslint-plugin-node": "^6.0.1",
