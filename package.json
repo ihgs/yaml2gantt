@@ -26,9 +26,11 @@
   "dependencies": {
     "commander": "^2.9.0",
     "d3": "^4.4.4",
+    "deasync": "^0.1.12",
     "js-yaml": "^3.6.1",
     "jsdom": "^11.0.0",
     "moment": "^2.13.0",
+    "simple-git": "^1.92.0",
     "svg2png": "^4.1.1",
     "sync-request": "^5.0.0"
   },

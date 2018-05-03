@@ -69,8 +69,8 @@ function merge(base, other) {
 }
 
 let index = 0;
-exports.parse = function(yaml_path, start, end, key_prefix) {
-  let doc = yaml.safeLoad(loader.load(yaml_path));
+exports.parse = function(yaml_path, start, end, key_prefix, commitHash) {
+  let doc = yaml.safeLoad(loader.load(yaml_path, commitHash));
   let range = doc.Range;
   let data = {};
 
@@ -97,7 +97,8 @@ exports.parse = function(yaml_path, start, end, key_prefix) {
         loader.join(yaml_path, resources[key].include),
         start,
         end,
-        key + '::'
+        key + '::',
+        commitHash
       );
       merge(data['resources'], _data['resources']);
     } else if (type == 'section') {

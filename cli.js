@@ -18,6 +18,7 @@ const program = cmd
   )
   .option('-f, --format <html|svg|png>', 'Output format.')
   .option('--compare <compare_file>', 'Set file which you want to compare')
+  .option('--compare-git <hash>', 'Set git hash')
   .option('--stdout', 'Output to stdout [Default: output to a file.]')
   .arguments('yaml_path')
   .parse(process.argv);
@@ -96,15 +97,29 @@ if (filepath == undefined) {
 
 let data;
 const compare_file = program.compare;
-if (compare_file == undefined) {
+const compare_hash = program.compareGit;
+if (compare_file == undefined && compare_hash == undefined) {
   data = yaml.parse(filepath);
 } else {
   data = yaml.parse(filepath);
-  const compare_data = yaml.parse(
-    compare_file,
-    data['range']['start'],
-    data['range']['end']
-  );
+
+  let compare_data;
+
+  if (compare_file) {
+    compare_data = yaml.parse(
+      compare_file,
+      data['range']['start'],
+      data['range']['end']
+    );
+  } else {
+    compare_data = yaml.parse(
+      filepath,
+      data['range']['start'],
+      data['range']['end'],
+      undefined,
+      compare_hash
+    );
+  }
   data['resources']['compared_tasks'] = [];
   for (let key in data['resources']['tasks']) {
     for (let cKey in compare_data['resources']['tasks']) {
