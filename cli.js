@@ -8,9 +8,10 @@ const gant = require('./src/js/gantt.js');
 const yaml = require('./src/js/yaml_parser');
 const conf = require('./src/js/config');
 const validator = require('./src/js/validator.js');
+const pjson = require('./package.json');
 
 const program = cmd
-  .version('0.1.0')
+  .version(pjson.version)
   .command('yaml2gantt')
   .usage('[options] <file>')
   .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
