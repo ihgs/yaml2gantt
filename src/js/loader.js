@@ -3,11 +3,15 @@ const fs = require('fs');
 const path = require('path');
 const request = require('sync-request');
 
-exports.load = function(path) {
+exports.load = function(path, commitHash) {
   if (path.startsWith('http')) {
     return http(path);
   } else {
-    return file(path);
+    if (commitHash == undefined) {
+      return file(path);
+    } else {
+      return git(path, commitHash);
+    }
   }
 };
 
@@ -26,4 +30,19 @@ function http(url) {
 
 function file(uri) {
   return fs.readFileSync(uri, 'utf8');
+}
+
+function git(path, hash) {
+  let ret;
+  let done = false;
+  const git = require('simple-git');
+  git('.').show([hash + ':' + path], (err, result) => {
+    ret = result;
+    done = true;
+  });
+
+  require('deasync').loopWhile(function() {
+    return !done;
+  });
+  return ret;
 }

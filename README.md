@@ -33,6 +33,7 @@ yaml2gantt https://raw.githubusercontent.com/ihgs/yaml2gantt/master/sample/tasks
     -o, --output <output_file>   Output to a specified file. [Default: input filename + ext in current directory.
     -f, --format <html|svg|png>  Output format.
     --compare <compare_file>     Set file which you want to compare
+    --compare-git <hash>         Set git hash
     --stdout                     Output to stdout [Default: output to a file.]
     -h, --help                   output usage information
 ```
@@ -40,7 +41,7 @@ yaml2gantt https://raw.githubusercontent.com/ihgs/yaml2gantt/master/sample/tasks
 
 ## スケジュール比較
 
-compareオプション(--compare)でtaskファイルを指定。  
+compareオプション(--compare,--comparet-git)でtaskファイルかgitのコミットハッシュを指定。  
 resource名が一致するtaskが存在する場合、スケジュールバーの直上に
 指定されたtaskのスケジュールバー(黄色)を表示
 

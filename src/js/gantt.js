@@ -187,3 +187,17 @@ exports.init = function(range, config) {
   _tasksGroup = _svg.append('g').attr('class', 'tasks');
   _comparedTasksGroup = _svg.append('g').attr('class', 'comparedTasks');
 };
+
+exports.out = function(format = 'html') {
+  if (format == 'svg' || format == 'png') {
+    const data =
+      '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML;
+    return data;
+  } else if (format == 'html') {
+    const data =
+      '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' +
+      document.body.innerHTML +
+      '</body></html>';
+    return data;
+  }
+};
