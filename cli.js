@@ -7,6 +7,7 @@ const svg2png = require('svg2png');
 const gant = require('./src/js/gantt.js');
 const yaml = require('./src/js/yaml_parser');
 const conf = require('./src/js/config');
+const validator = require('./src/js/validator.js');
 
 const program = cmd
   .version('0.1.0')
@@ -15,7 +16,7 @@ const program = cmd
   .option('-c, --config <config>', 'Set config path. default to ./config.yaml')
   .option(
     '-o, --output <output_file>',
-    'Output to a specified file. [Default: input filename + ext in current directory.'
+    'Output to a specified file. [Default: input filename + ext in current directory.]'
   )
   .option('-f, --format <html|svg|png>', 'Output format.')
   .option('--compare <compare_file>', 'Set file which you want to compare')
@@ -24,20 +25,21 @@ const program = cmd
   .arguments('yaml_path')
   .parse(process.argv);
 
-const config = conf.loadConfig(program.config);
-const filepath = program.args[0];
-if (filepath == undefined) {
-  program.help();
+try {
+  validator.validateOptions(program);
+} catch (msg) {
+  console.error(msg);
+  /* eslint no-process-exit:0 */
+  process.exit(1);
 }
 
-let data;
+const config = conf.loadConfig(program.config);
+
+const filepath = program.args[0];
+const data = yaml.parse(filepath);
 const compare_file = program.compare;
 const compare_hash = program.compareGit;
-if (compare_file == undefined && compare_hash == undefined) {
-  data = yaml.parse(filepath);
-} else {
-  data = yaml.parse(filepath);
-
+if (compare_file || compare_hash) {
   let compare_data;
 
   if (compare_file) {
@@ -74,31 +76,14 @@ if (compare_file == undefined && compare_hash == undefined) {
 gant.init(data.range, config);
 gant.update(data.resources);
 
-let output_file = program.output;
 const format = program.format || 'html';
 const stdout = program.stdout;
 
-let out;
-if (format == 'svg' || format == 'png') {
-  out = '<?xml version="1.0" encoding="utf-8"?>' + document.body.innerHTML;
-} else if (format == 'html') {
-  out =
-    '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' +
-    document.body.innerHTML +
-    '</body></html>';
-} else {
-  console.error('Format:' + format + ' is not supported.');
-  // eslint-disable-next-line no-process-exit
-  process.exit(1);
-}
+const out = gant.out(format);
 if (stdout) {
-  if (format == 'png') {
-    console.error('stdout option is not used when format is png.');
-    // eslint-disable-next-line no-process-exit
-    process.exit(1);
-  }
   console.log(out);
 } else {
+  let output_file = program.output;
   if (output_file == undefined) {
     let filename = path.basename(filepath);
     output_file = filename.replace(path.extname(filepath), '.' + format);

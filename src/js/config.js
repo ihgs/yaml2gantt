@@ -66,7 +66,7 @@ exports.loadConfig = function(argConfig) {
         config = yaml.config(config_file);
       }
     } catch (e) {
-      //no operation
+      //no operation. use default config
     }
   }
   return config;
