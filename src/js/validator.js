@@ -20,8 +20,7 @@ exports.validateOptions = function(program) {
   }
   checkFile(filepath);
 
-  if (!['html', 'png', 'svg'].includes(program.format)) {
-    console.log(program.format);
+  if (program.format && !['html', 'png', 'svg'].includes(program.format)) {
     throw 'Format:' + program.format + ' is not supported.';
   }
   if (program.stdout && program.format == 'png') {
