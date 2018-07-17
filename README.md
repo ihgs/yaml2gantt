@@ -134,6 +134,7 @@ yaml形式でタスクの情報を記述
 | start    | 開始日      |
 | end      | 終了日      |
 | events   | eventの配列 |
+| color    | タスクの色 (Red,Green,Blue,Yellow,Cyan,Magenta,Gray)  |
 
 event
 * name: イベント名
