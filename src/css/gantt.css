@@ -23,8 +23,51 @@ rect {
 text {
     font-size: 11px;
 }
+
 rect.taskRange {
     fill: #5d588a;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeRed {
+    fill: #ff384a;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeBlue {
+    fill: #2328ff;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeGreen {
+    fill: #23af2f;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeYellow {
+    fill: #b0b020;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeCyan {
+    fill: #20b0b0;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeMagenta {
+    fill: #b020b0;
+    stroke: #000;
+    stroke-width: 0.5;
+}
+
+rect.taskRangeGray {
+    fill: #a0a0a0;
     stroke: #000;
     stroke-width: 0.5;
 }

@@ -127,6 +127,7 @@ exports.parse = function(yaml_path, start, end, key_prefix, commitHash) {
       let task = {
         id: key_prefix + key,
         name: resources[key].name,
+        color: resources[key].color,
         y_index: index,
         start: moment.utc(resources[key].start, _inputPattern),
         end: moment.utc(resources[key].end, _inputPattern).add(1, 'days'),
