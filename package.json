@@ -35,7 +35,7 @@
     "sync-request": "^5.0.0"
   },
   "devDependencies": {
-    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-node": "^7.0.1",
     "gulp": "^3.9.1",
     "gulp-clang-format": "^1.0.23",
     "gulp-eslint": "^4.0.1",
