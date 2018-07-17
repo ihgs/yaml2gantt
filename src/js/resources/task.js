@@ -13,7 +13,13 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
 
   task_group
     .append('rect')
-    .attr('class', 'taskRange')
+    .attr('class', function(item) {
+      if (typeof item.color === 'undefined') {
+        return 'taskRange';
+      } else {
+        return 'taskRange' + item.color;
+      }
+    })
     .attr('x', function(item) {
       return _xScale(item.start);
     })
