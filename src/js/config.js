@@ -4,10 +4,7 @@ const yaml = require('./yaml_parser');
 
 exports.loadConfig = function(argConfig) {
   let config = {
-    canvas: {
-      width: 1000,
-      height: 300
-    },
+    canvas: { width: 1000, height: 300 },
     holidays: [],
     timeFormatLocale: {
       dateTime: '%a %b %e %X %Y',
@@ -66,7 +63,7 @@ exports.loadConfig = function(argConfig) {
         config = yaml.config(config_file);
       }
     } catch (e) {
-      //no operation. use default config
+      // no operation. use default config
     }
   }
   return config;
