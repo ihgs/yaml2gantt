@@ -1,22 +1,41 @@
 /* eslint node/no-unpublished-require: 0 */
 var gulp = require('gulp');
-var run = require('gulp-run');
-var rename = require('gulp-rename');
+var ps = require('child_process').exec;
+var fs = require('fs');
 var gulpClangFormat = require('gulp-clang-format');
 var gulpEslint = require('gulp-eslint');
 
 gulp.task('create_html', function() {
-  return run('./cli.js -f html --stdout ./sample/tasks.yaml')
-    .exec()
-    .pipe(rename('test.html'))
-    .pipe(gulp.dest('tmp/'));
+  return ps('./cli.js -f html --stdout ./sample/tasks.yaml', function(
+    err,
+    stdout,
+    stderr
+  ) {
+    if (err) {
+      console.log(stderr);
+      return;
+    }
+    console.log(stdout);
+    fs.mkdir('tmp', function() {
+      fs.writeFileSync('tmp/test.html', stdout);
+    });
+  });
 });
 
 gulp.task('create_svg', function() {
-  return run('./cli.js -f svg --stdout ./sample/tasks.yaml')
-    .exec()
-    .pipe(rename('test.svg'))
-    .pipe(gulp.dest('tmp/'));
+  return ps('./cli.js -f svg --stdout ./sample/tasks.yaml', function(
+    err,
+    stdout,
+    stderr
+  ) {
+    if (err) {
+      console.log(stderr);
+      return;
+    }
+    fs.mkdir('tmp', function() {
+      fs.writeFileSync('tmp/test.svg', stdout);
+    });
+  });
 });
 
 gulp.task('watch', function() {
