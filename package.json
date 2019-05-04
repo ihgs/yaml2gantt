@@ -27,7 +27,7 @@
     "child_process": "^1.0.2",
     "commander": "^2.9.0",
     "d3": "^5.9.2",
-    "deasync": "^0.1.12",
+    "deasync": "^0.1.15",
     "js-yaml": "^3.6.1",
     "jsdom": "^14.0.0",
     "moment": "^2.13.0",
