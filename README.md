@@ -20,7 +20,7 @@ yaml2gantt https://raw.githubusercontent.com/ihgs/yaml2gantt/master/sample/tasks
 
 ## 動作環境
 
-* Node v6以上
+* Node v8以上
 
 ## 使用方法
 

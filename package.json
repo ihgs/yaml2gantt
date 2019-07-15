@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "description": "A client tool to output Ganttchart SVG from yaml.",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "engineStrict": true,
   "bin": "cli.js",
@@ -28,7 +28,7 @@
     "d3": "^5.9.2",
     "deasync": "^0.1.12",
     "js-yaml": "^3.6.1",
-    "jsdom": "^14.0.0",
+    "jsdom": "^15.1.1",
     "moment": "^2.13.0",
     "simple-git": "^1.92.0",
     "svg2png": "^4.1.1",
