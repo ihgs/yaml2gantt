@@ -8,7 +8,6 @@
   "engineStrict": true,
   "bin": "cli.js",
   "scripts": {
-    "precommit": "lint-staged",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "lint-staged": {
@@ -49,5 +48,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ihgs/yaml2gantt.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
