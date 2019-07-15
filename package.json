@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "description": "A client tool to output Ganttchart SVG from yaml.",
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=8.0.0"
   },
   "engineStrict": true,
   "bin": "cli.js",
