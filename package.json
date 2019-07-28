@@ -30,7 +30,7 @@
     "js-yaml": "^3.6.1",
     "jsdom": "^15.1.1",
     "moment": "^2.13.0",
-    "simple-git": "^1.92.0",
+    "simple-git": "^1.124.0",
     "svg2png": "^4.1.1",
     "sync-request": "^6.1.0"
   },
