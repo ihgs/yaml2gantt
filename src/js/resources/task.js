@@ -62,7 +62,8 @@ exports.tasks = function(_tasksGroup, data, _rowHeight, _width, _xScale) {
     .attr('class', 'event')
     .attr('transform', function(item) {
       let y = item.y_index * _rowHeight + 40;
-      let x = (_xScale(item.date) + _xScale(item.date.add(1, 'day'))) / 2.0;
+      let x =
+        (_xScale(item.date) + _xScale(moment(item.date).add(1, 'day'))) / 2.0;
       return 'translate(' + x + ',' + y + ')';
     })
     .attr('d', d3.symbol().type(d3.symbolTriangle))
